@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot Teller</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="landing-page" class="container">
+        <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="lamp-image">
+        <h1>Tarot Teller</h1>
+        <p class="intro-text">Find your answers with the ancient art of tarot</p>
+        <button class="btn" id="startButton">
+            <i class="fas fa-crystal-ball"></i> What is my fate?
+        </button>
+    </div>
+
+    <div id="tarot-page" class="container hidden">
+        <h1>Your Reading</h1>
+        <div class="btn-container">
+            <button class="btn" id="drawOneCardBtn">
+                <i class="fas fa-crown"></i> Single Card
+            </button>
+            <button class="btn" id="drawThreeCardsBtn">
+                <i class="fas fa-chess-queen"></i> Three Cards
+            </button>
+        </div>
+
+        <div class="cards-row" id="cards">
+
+        </div>
+
+        <button class="btn" id="overallReadingBtn" style="display: none;">
+            <i class="fas fa-scroll"></i> Reveal Meaning
+        </button>
+        <div class="bottom-buttons">
+            <button class="btn" id="newReadingBtn">
+                <i class="fas fa-redo"></i> New Reading
+            </button>
+            <button class="btn" id="backToHomeBtn">
+                <i class="fas fa-home"></i> Back to Home
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
