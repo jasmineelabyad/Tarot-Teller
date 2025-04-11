@@ -4,44 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarot Teller</title>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        darkGold: '#B8860B',
+                        mystical: '#2d0a31',
+                    },
+                    fontFamily: {
+                        cormorant: ['Cormorant Garamond', 'serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow-gold {
+                text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            }
+            .gold-glow {
+                filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
+            }
+            .btn-hover {
+                @apply hover:bg-gold/10 hover:transform hover:-translate-y-1 hover:shadow-lg hover:shadow-gold/20 transition-all duration-300;
+            }
+            .card-hover {
+                @apply hover:transform hover:-translate-y-2 hover:shadow-lg hover:shadow-gold/30 transition-all duration-300;
+            }
+            .card-flip {
+                perspective: 1000px;
+                transform-style: preserve-3d;
+            }
+            .card-flip:hover .card-inner {
+                transform: rotateY(180deg);
+            }
+            .card-inner {
+                transition: transform 0.8s;
+                transform-style: preserve-3d;
+            }
+            .card-front, .card-back {
+                -webkit-backface-visibility: hidden;
+                backface-visibility: hidden;
+            }
+            .card-back {
+                transform: rotateY(180deg);
+            }
+            .pulse-animation {
+                animation: pulse 1.5s infinite;
+            }
+            @keyframes pulse {
+                0% { opacity: 0.6; }
+                50% { opacity: 1; }
+                100% { opacity: 0.6; }
+            }
+        }
+    </style>
+    <!-- Custom CSS for specific elements -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-    <div id="landing-page" class="container">
-        <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="lamp-image">
-        <h1>Tarot Teller</h1>
-        <p class="intro-text">Find your answers with the ancient art of tarot</p>
-        <button class="btn" id="startButton">
-            <i class="fas fa-crystal-ball"></i> What is my fate?
+<body class="bg-black min-h-screen flex items-center justify-center font-cormorant text-gold p-4">
+    <div id="landing-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-black/80 border-2 border-gold rounded-lg p-8 text-center">
+        <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="w-40 h-auto mb-8 gold-glow">
+        <h1 class="text-5xl font-bold mb-6 text-shadow-gold">Tarot Teller</h1>
+        <p class="text-xl mb-10 max-w-lg">Find your answers with the ancient art of tarot</p>
+        <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="startButton">
+            <i class="fas fa-sparkles mr-2"></i> What is my fate?
         </button>
     </div>
 
-    <div id="tarot-page" class="container hidden">
-        <h1>Your Reading</h1>
-        <div class="btn-container">
-            <button class="btn" id="drawOneCardBtn">
-                <i class="fas fa-crown"></i> Single Card
+    <div id="tarot-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-black/80 border-2 border-gold rounded-lg p-8 hidden">
+        <h1 class="text-4xl font-bold mb-8 text-shadow-gold">Your Reading</h1>
+        <div class="flex flex-wrap justify-center gap-4 mb-8 w-full">
+            <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="drawOneCardBtn">
+                <i class="fas fa-wand-sparkles mr-2"></i> Single Card
             </button>
-            <button class="btn" id="drawThreeCardsBtn">
-                <i class="fas fa-chess-queen"></i> Three Cards
+            <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="drawThreeCardsBtn">
+                <i class="fas fa-wand-magic-sparkles mr-2"></i> Three Cards
             </button>
         </div>
 
-        <div class="cards-row" id="cards">
-
+        <div class="flex flex-wrap justify-center gap-6 w-full p-4 overflow-x-auto" id="cards">
+            <!-- Cards will appear here -->
         </div>
 
-        <button class="btn" id="overallReadingBtn" style="display: none;">
-            <i class="fas fa-scroll"></i> Reveal Meaning
+        <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover hidden" id="overallReadingBtn">
+            <i class="fas fa-book-open mr-2"></i> Reveal Meaning
         </button>
-        <div class="bottom-buttons">
-            <button class="btn" id="newReadingBtn">
-                <i class="fas fa-redo"></i> New Reading
+        <div class="flex flex-wrap justify-center gap-4 mt-8 w-full">
+            <button class="bg-transparent text-emerald-400 border-2 border-emerald-400 rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="newReadingBtn">
+                <i class="fas fa-rotate mr-2"></i> New Reading
             </button>
-            <button class="btn" id="backToHomeBtn">
-                <i class="fas fa-home"></i> Back to Home
+            <button class="bg-transparent text-blue-400 border-2 border-blue-400 rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="backToHomeBtn">
+                <i class="fas fa-house mr-2"></i> Back to Home
             </button>
         </div>
     </div>

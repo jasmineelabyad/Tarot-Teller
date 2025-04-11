@@ -64,73 +64,214 @@ function displayCard(cards) {
     cardsContainer.innerHTML = '';
 
     const readingTitle = document.createElement('h2');
-    readingTitle.className = 'reading-title';
+    readingTitle.className = 'text-3xl font-semibold mb-3 text-shadow-gold';
     readingTitle.textContent = 'Here is your reading...';
     cardsContainer.appendChild(readingTitle);
 
+    // Add instruction for card flipping
+    const instruction = document.createElement('p');
+    instruction.className = 'text-gold/70 text-sm mb-6 italic';
+    instruction.innerHTML = '<i class="fas fa-info-circle mr-1"></i> Hover over cards to reveal their meanings';
+    cardsContainer.appendChild(instruction);
+
+    // Create a flex container for the cards
+    const cardsFlexContainer = document.createElement('div');
+    cardsFlexContainer.classList.add('flex', 'flex-wrap', 'justify-center', 'gap-6');
+    cardsContainer.appendChild(cardsFlexContainer);
+
     cards.forEach(card => {
+        // Get the card description
+        const description = getCardDescription(card);
+
+        // Create flip card container
         const cardElement = document.createElement('div');
-        cardElement.classList.add('card-container');
+        cardElement.classList.add('card-flip', 'w-64', 'h-96', 'mb-8', 'mx-2');
+
+        // Create inner container that will flip
+        const cardInner = document.createElement('div');
+        cardInner.classList.add('card-inner', 'relative', 'w-full', 'h-full');
+        cardElement.appendChild(cardInner);
+
+        // Create front of card
+        const cardFront = document.createElement('div');
+        cardFront.classList.add('card-front', 'absolute', 'w-full', 'h-full', 'flex', 'flex-col', 'items-center',
+            'bg-black/70', 'border', 'border-gold', 'rounded-lg', 'overflow-hidden');
+
+        // Image container for front
+        const imgContainer = document.createElement('div');
+        imgContainer.classList.add('w-full', 'h-72', 'flex', 'items-center', 'justify-center', 'p-3');
 
         const img = document.createElement('img');
         img.src = `cards/${card}.jpg`;
         img.alt = card;
-        img.classList.add('tarot-card');
+        img.classList.add('h-full', 'object-contain');
+        imgContainer.appendChild(img);
 
-        cardElement.appendChild(img);
-        cardsContainer.appendChild(cardElement);
+        // Card name for front
+        const cardName = document.createElement('h3');
+        cardName.classList.add('text-gold', 'text-xl', 'font-semibold', 'mt-2', 'px-4', 'text-center');
+        cardName.textContent = formatCardName(card);
+
+        // Add elements to front
+        cardFront.appendChild(imgContainer);
+        cardFront.appendChild(cardName);
+
+        // Create back of card with description
+        const cardBack = document.createElement('div');
+        cardBack.classList.add('card-back', 'absolute', 'w-full', 'h-full', 'flex', 'flex-col', 'items-center', 'justify-center',
+            'bg-black/90', 'border', 'border-gold', 'rounded-lg', 'p-5');
+
+        // Card name for back
+        const cardNameBack = document.createElement('h3');
+        cardNameBack.classList.add('text-gold', 'text-xl', 'font-semibold', 'mb-4', 'text-center');
+        cardNameBack.textContent = formatCardName(card);
+
+        // Card description
+        const cardDesc = document.createElement('p');
+        cardDesc.classList.add('text-gold/90', 'text-base', 'text-center', 'leading-relaxed', 'overflow-y-auto', 'max-h-64');
+        cardDesc.textContent = description;
+
+        // Add elements to back
+        cardBack.appendChild(cardNameBack);
+        cardBack.appendChild(cardDesc);
+
+        // Add front and back to inner container
+        cardInner.appendChild(cardFront);
+        cardInner.appendChild(cardBack);
+
+        // Add card to container
+        cardsFlexContainer.appendChild(cardElement);
     });
 }
 
 function generateOverallReading() {
+    // Show loading indicator
     cardsContainer.innerHTML = '';
+    const loadingElement = document.createElement('div');
+    loadingElement.className = 'text-xl text-gold my-8 text-center pulse-animation';
+    loadingElement.textContent = 'Consulting the mystical forces...';
+    cardsContainer.appendChild(loadingElement);
 
-    const readingTitle = document.createElement('h2');
-    readingTitle.className = 'reading-title';
-    readingTitle.textContent = 'Here is your reading...';
-    cardsContainer.appendChild(readingTitle);
+    try {
+        // Create reading container
+        const readingContainer = document.createElement('div');
+        readingContainer.classList.add('w-full', 'max-w-3xl', 'mx-auto', 'mt-6');
 
-    const readingContainer = document.createElement('div');
-    readingContainer.classList.add('reading-container');
+        if (drawnCards.length === 1) {
+            // Replace loading with actual content
+            cardsContainer.innerHTML = '';
+            const readingTitle = document.createElement('h2');
+            readingTitle.className = 'text-3xl font-semibold mb-3 text-shadow-gold';
+            readingTitle.textContent = 'Your Tarot Reading';
+            cardsContainer.appendChild(readingTitle);
 
-    if (drawnCards.length === 1) {
-        addCardToReading(readingContainer, drawnCards[0], "Your Card");
+            // Add a subtitle with explanation
+            const subtitle = document.createElement('p');
+            subtitle.className = 'text-gold/70 text-base mb-6';
+            subtitle.textContent = 'A detailed interpretation of your card';
+            cardsContainer.appendChild(subtitle);
+
+            addCardToReading(readingContainer, drawnCards[0], "Your Card");
+            cardsContainer.appendChild(readingContainer);
+        }
+        else if (drawnCards.length === 3) {
+            // Replace loading with actual content
+            cardsContainer.innerHTML = '';
+            const readingTitle = document.createElement('h2');
+            readingTitle.className = 'text-3xl font-semibold mb-3 text-shadow-gold';
+            readingTitle.textContent = 'Your Three-Card Spread';
+            cardsContainer.appendChild(readingTitle);
+
+            // Add a subtitle with explanation
+            const subtitle = document.createElement('p');
+            subtitle.className = 'text-gold/70 text-base mb-6';
+            subtitle.textContent = 'Past, Present, and Future - revealing your journey';
+            cardsContainer.appendChild(subtitle);
+
+            const positions = ["Past", "Present", "Future"];
+            drawnCards.forEach((card, index) => {
+                addCardToReading(readingContainer, card, positions[index]);
+            });
+
+            // Create a visually distinct interpretation section
+            const interpretation = document.createElement('div');
+            interpretation.classList.add('mt-12', 'p-8', 'bg-gold/5', 'rounded-lg', 'border-t-4', 'border-gold', 'text-left', 'w-full', 'shadow-lg', 'shadow-gold/10');
+
+            // Add a decorative element
+            const decorElement = document.createElement('div');
+            decorElement.classList.add('flex', 'justify-center', 'mb-6');
+            const decorIcon = document.createElement('i');
+            decorIcon.classList.add('fas', 'fa-moon', 'text-3xl', 'text-gold');
+            decorElement.appendChild(decorIcon);
+            interpretation.appendChild(decorElement);
+
+            // Add title with icon
+            const titleContainer = document.createElement('div');
+            titleContainer.classList.add('flex', 'items-center', 'justify-center', 'mb-6');
+
+            const interpretationTitle = document.createElement('h3');
+            interpretationTitle.classList.add('text-2xl', 'font-semibold', 'text-gold', 'text-center');
+            interpretationTitle.textContent = 'Combined Meaning';
+            titleContainer.appendChild(interpretationTitle);
+            interpretation.appendChild(titleContainer);
+
+            // Add a separator
+            const separator = document.createElement('div');
+            separator.classList.add('w-24', 'h-px', 'bg-gold/50', 'mx-auto', 'mb-6');
+            interpretation.appendChild(separator);
+
+            // Add the interpretation text
+            const interpretationText = document.createElement('p');
+            interpretationText.classList.add('text-lg', 'leading-relaxed', 'whitespace-pre-line', 'text-gold/90');
+            interpretationText.textContent = generateCombinedMeaning(drawnCards);
+            interpretation.appendChild(interpretationText);
+
+            readingContainer.appendChild(interpretation);
+            cardsContainer.appendChild(readingContainer);
+        }
+    } catch (error) {
+        console.error('Error generating reading:', error);
+        cardsContainer.innerHTML = '';
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'my-8 p-4 text-red-400 text-lg text-center border border-red-400 rounded-lg bg-red-400/10';
+        errorMessage.textContent = 'The mystical forces are clouded. Please try again later.';
+        cardsContainer.appendChild(errorMessage);
     }
-    else if (drawnCards.length === 3) {
-        const positions = ["Past", "Present", "Future"];
-        drawnCards.forEach((card, index) => {
-            addCardToReading(readingContainer, card, positions[index]);
-        });
-
-        const interpretation = document.createElement('div');
-        interpretation.classList.add('interpretation');
-
-        const interpretationTitle = document.createElement('h3');
-        interpretationTitle.textContent = 'Combined Meaning';
-        interpretation.appendChild(interpretationTitle);
-
-        const interpretationText = document.createElement('p');
-        interpretationText.textContent = generateCombinedMeaning(drawnCards);
-        interpretation.appendChild(interpretationText);
-
-        readingContainer.appendChild(interpretation);
-    }
-
-    cardsContainer.appendChild(readingContainer);
 }
 
 function addCardToReading(container, card, position) {
+    // Create a card reading container with flex layout
     const cardElement = document.createElement('div');
-    cardElement.classList.add('reading-card');
+    cardElement.classList.add('mb-8', 'p-5', 'bg-gold/5', 'rounded-lg', 'border-l-4', 'border-gold', 'flex', 'flex-col', 'md:flex-row', 'gap-4', 'items-center', 'md:items-start');
 
+    // Add card image
+    const imgContainer = document.createElement('div');
+    imgContainer.classList.add('w-32', 'h-48', 'flex-shrink-0', 'flex', 'items-center', 'justify-center');
+
+    const img = document.createElement('img');
+    img.src = `cards/${card}.jpg`;
+    img.alt = card;
+    img.classList.add('h-full', 'object-contain', 'rounded', 'border', 'border-gold/50');
+    imgContainer.appendChild(img);
+    cardElement.appendChild(imgContainer);
+
+    // Add text content container
+    const textContainer = document.createElement('div');
+    textContainer.classList.add('flex-grow');
+
+    // Add title
     const title = document.createElement('h3');
+    title.classList.add('text-xl', 'font-semibold', 'text-gold', 'mb-3');
     title.textContent = `${position}: ${formatCardName(card)}`;
-    cardElement.appendChild(title);
+    textContainer.appendChild(title);
 
+    // Add description
     const description = document.createElement('p');
+    description.classList.add('text-lg', 'leading-relaxed');
     description.textContent = getCardDescription(card);
-    cardElement.appendChild(description);
+    textContainer.appendChild(description);
 
+    cardElement.appendChild(textContainer);
     container.appendChild(cardElement);
 }
 
