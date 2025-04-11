@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+    
+        createChat({
+            webhookUrl: 'https://n8n.s2.moussa2100.com/webhook/13912d70-d67d-4142-86f8-5fffa85a50bd/chat',
+            initialMessages: ['🌟 Welcome, Seeker...🔮 I am Jasmine, your digital tarot guide through the mystical realms. 🃏 The cards whisper secrets of your past, present, and future... ✨ What mysteries shall we uncover together? 🌙 Ask your question, and let the journey begin...'],
+            mode: 'window',
+            showWelcomeScreen: true,
+            i18n: { 		en: { 			title: 'Tarot Teller Gemini🔮🌙', 			subtitle: "🔮 Ask Jasmine for a deeper look into your destiny.", 			footer: '', 			getStarted: 'New Conversation', 			inputPlaceholder: 'Type your question..', 		}, 	},
+ 
+ 
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarot Teller</title>
