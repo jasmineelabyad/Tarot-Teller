@@ -79,7 +79,7 @@ function displayCard(cards) {
     cardsFlexContainer.classList.add('flex', 'flex-wrap', 'justify-center', 'gap-6');
     cardsContainer.appendChild(cardsFlexContainer);
 
-    cards.forEach(card => {
+    cards.forEach((card, index) => {
         // Get the card description
         const description = getCardDescription(card);
 
@@ -134,6 +134,20 @@ function displayCard(cards) {
         // Add elements to back
         cardBack.appendChild(cardNameBack);
         cardBack.appendChild(cardDesc);
+
+        // Add positional meaning for 3-card spread
+        if (cards.length === 3) {
+            const positions = ["Past", "Present", "Future"];
+            const position = positions[index];
+            const positionalMeaning = getPositionalMeaning(card, position); // Call new function
+
+            const positionalDesc = document.createElement('p');
+            // Added styling for clarity and spacing
+            positionalDesc.classList.add('text-gold/70', 'text-sm', 'italic', 'mt-3', 'text-center', 'leading-snug', 'px-2');
+            // Use innerHTML to allow bolding the position label
+            positionalDesc.innerHTML = `<strong class="font-semibold text-gold/80">${position}:</strong> ${positionalMeaning}`;
+            cardBack.appendChild(positionalDesc); // Append after general description
+        }
 
         // Add front and back to inner container
         cardInner.appendChild(cardFront);
@@ -418,6 +432,24 @@ function getCardDescription(card) {
     };
 
     return cardDescriptions[card] || "The cards don't say anything...";
+}
+
+// New function to generate placeholder positional meanings
+function getPositionalMeaning(card, position) {
+    const formattedName = formatCardName(card);
+    switch (position) {
+        case "Past":
+            // Placeholder meaning for Past position
+            return `Reflects past influences and foundational events related to ${formattedName}. Consider how its themes have shaped your journey to this point.`;
+        case "Present":
+            // Placeholder meaning for Present position
+            return `Represents your current situation, challenges, or focus concerning ${formattedName}. Pay attention to its message for guidance right now.`;
+        case "Future":
+            // Placeholder meaning for Future position
+            return `Suggests potential outcomes, future trends, or advice regarding ${formattedName}. Its energy indicates what may lie ahead based on the current path.`;
+        default:
+            return ""; // Fallback, should not occur in a 3-card spread
+    }
 }
 
 function generateCombinedMeaning(cards) {
