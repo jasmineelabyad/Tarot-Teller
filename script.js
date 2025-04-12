@@ -22,9 +22,9 @@ function backToHome() {
     document.getElementById('landing-page').classList.remove('hidden');
     cardsContainer.innerHTML = '';
     drawnCards = [];
-    drawOneCardBtn.style.display = 'inline-block';
-    drawThreeCardsBtn.style.display = 'inline-block';
-    overallReadingBtn.style.display = 'none';
+    drawOneCardBtn.classList.remove('hidden');
+    drawThreeCardsBtn.classList.remove('hidden');
+    overallReadingBtn.classList.add('hidden');
 }
 
 function startTarot() {
@@ -33,11 +33,11 @@ function startTarot() {
     document.getElementById('tarot-page').classList.remove('hidden');
 
     // Make sure the buttons are visible
-    document.getElementById('drawOneCardBtn').style.display = 'inline-block';
-    document.getElementById('drawThreeCardsBtn').style.display = 'inline-block';
-    document.getElementById('overallReadingBtn').style.display = 'none';
-    document.getElementById('newReadingBtn').style.display = 'inline-block';
-    document.getElementById('backToHomeBtn').style.display = 'inline-block';
+    drawOneCardBtn.classList.remove('hidden');
+    drawThreeCardsBtn.classList.remove('hidden');
+    overallReadingBtn.classList.add('hidden');
+    newReadingBtn.classList.remove('hidden'); // Assuming it should be visible on tarot page
+    backToHomeBtn.classList.remove('hidden'); // Assuming it should be visible on tarot page
 }
 
 function drawOneCard() {
@@ -55,22 +55,22 @@ function drawThreeCards() {
 }
 
 function updateButtonStates() {
-    drawOneCardBtn.style.display = 'none';
-    drawThreeCardsBtn.style.display = 'none';
-    overallReadingBtn.style.display = 'inline-block';
+    drawOneCardBtn.classList.add('hidden');
+    drawThreeCardsBtn.classList.add('hidden');
+    overallReadingBtn.classList.remove('hidden');
 }
 
 function displayCard(cards) {
     cardsContainer.innerHTML = '';
 
     const readingTitle = document.createElement('h2');
-    readingTitle.className = 'text-3xl font-semibold mb-3 text-shadow-gold';
-    readingTitle.textContent = 'Here is your reading...';
-    cardsContainer.appendChild(readingTitle);
+    readingTitle.className = 'text-3xl font-bold font-cairo mb-3 text-primary'; // Use primary color
+    readingTitle.textContent = 'Here are your cards...';
+    //cardsContainer.appendChild(readingTitle);
 
     // Add instruction for card flipping
     const instruction = document.createElement('p');
-    instruction.className = 'text-gold/70 text-sm mb-6 italic';
+    instruction.className = 'text-neutral-400 text-sm mb-6 italic font-cairo font-light'; // Use neutral color with light weight
     instruction.innerHTML = '<i class="fas fa-info-circle mr-1"></i> Hover over cards to reveal their meanings';
     cardsContainer.appendChild(instruction);
 
@@ -85,7 +85,7 @@ function displayCard(cards) {
 
         // Create flip card container
         const cardElement = document.createElement('div');
-        cardElement.classList.add('card-flip', 'w-64', 'h-96', 'mb-8', 'mx-2');
+        cardElement.classList.add('card-flip', 'w-60', 'h-96', 'mb-8', 'mx-2'); // Slightly narrower card
 
         // Create inner container that will flip
         const cardInner = document.createElement('div');
@@ -95,11 +95,11 @@ function displayCard(cards) {
         // Create front of card
         const cardFront = document.createElement('div');
         cardFront.classList.add('card-front', 'absolute', 'w-full', 'h-full', 'flex', 'flex-col', 'items-center',
-            'bg-black/70', 'border', 'border-gold', 'rounded-lg', 'overflow-hidden');
+            'bg-bgLighter', 'border', 'border-primary/30', 'rounded-lg', 'overflow-hidden', 'shadow-md'); // Use bgLighter with primary border
 
         // Image container for front
         const imgContainer = document.createElement('div');
-        imgContainer.classList.add('w-full', 'h-72', 'flex', 'items-center', 'justify-center', 'p-3');
+        imgContainer.classList.add('w-full', 'h-64', 'flex', 'items-center', 'justify-center', 'p-3'); // Slightly less height for image
 
         const img = document.createElement('img');
         img.src = `cards/${card}.jpg`;
@@ -109,7 +109,7 @@ function displayCard(cards) {
 
         // Card name for front
         const cardName = document.createElement('h3');
-        cardName.classList.add('text-gold', 'text-xl', 'font-semibold', 'mt-2', 'px-4', 'text-center');
+        cardName.classList.add('text-primary', 'text-lg', 'font-semibold', 'mt-4', 'px-4', 'text-center', 'font-cairo'); // Use Cairo for card name
         cardName.textContent = formatCardName(card);
 
         // Add elements to front
@@ -118,17 +118,17 @@ function displayCard(cards) {
 
         // Create back of card with description
         const cardBack = document.createElement('div');
-        cardBack.classList.add('card-back', 'absolute', 'w-full', 'h-full', 'flex', 'flex-col', 'items-center', 'justify-center',
-            'bg-black/90', 'border', 'border-gold', 'rounded-lg', 'p-5');
+        // card-back class already applies base styles from css/styles.css (bg, border, etc.)
+        cardBack.classList.add('card-back', 'absolute', 'w-full', 'h-full', 'flex', 'flex-col', 'items-center', 'justify-center', 'p-4'); // Adjusted padding
 
         // Card name for back
         const cardNameBack = document.createElement('h3');
-        cardNameBack.classList.add('text-gold', 'text-xl', 'font-semibold', 'mb-4', 'text-center');
+        cardNameBack.classList.add('text-primary', 'text-lg', 'font-semibold', 'mb-3', 'text-center', 'font-cairo'); // Use Cairo
         cardNameBack.textContent = formatCardName(card);
 
         // Card description
         const cardDesc = document.createElement('p');
-        cardDesc.classList.add('text-gold/90', 'text-base', 'text-center', 'leading-relaxed', 'overflow-y-auto', 'max-h-64');
+        cardDesc.classList.add('text-neutral-200', 'text-sm', 'text-center', 'leading-relaxed', 'overflow-y-auto', 'max-h-48', 'font-cairo', 'font-normal'); // Use neutral, smaller text, adjust max-h
         cardDesc.textContent = description;
 
         // Add elements to back
@@ -143,9 +143,9 @@ function displayCard(cards) {
 
             const positionalDesc = document.createElement('p');
             // Added styling for clarity and spacing
-            positionalDesc.classList.add('text-gold/70', 'text-sm', 'italic', 'mt-3', 'text-center', 'leading-snug', 'px-2');
+            positionalDesc.classList.add('text-neutral-400', 'text-xs', 'italic', 'mt-2', 'text-center', 'leading-snug', 'px-2', 'font-cairo', 'font-light'); // Use neutral, smaller text with light weight
             // Use innerHTML to allow bolding the position label
-            positionalDesc.innerHTML = `<strong class="font-semibold text-gold/80">${position}:</strong> ${positionalMeaning}`;
+            positionalDesc.innerHTML = `<strong class="font-semibold text-neutral-300">${position}:</strong> ${positionalMeaning}`;
             cardBack.appendChild(positionalDesc); // Append after general description
         }
 
@@ -162,7 +162,7 @@ function generateOverallReading() {
     // Show loading indicator
     cardsContainer.innerHTML = '';
     const loadingElement = document.createElement('div');
-    loadingElement.className = 'text-xl text-gold my-8 text-center pulse-animation';
+    loadingElement.className = 'text-xl text-neutral-300 my-8 text-center pulse-animation'; // Use neutral color
     loadingElement.textContent = 'Consulting the mystical forces...';
     cardsContainer.appendChild(loadingElement);
 
@@ -175,14 +175,14 @@ function generateOverallReading() {
             // Replace loading with actual content
             cardsContainer.innerHTML = '';
             const readingTitle = document.createElement('h2');
-            readingTitle.className = 'text-3xl font-semibold mb-3 text-shadow-gold';
+            readingTitle.className = 'text-3xl font-bold font-cairo mb-3 text-primary'; // Use primary color with Cairo font
             readingTitle.textContent = 'Your Tarot Reading';
             cardsContainer.appendChild(readingTitle);
 
             // Add a subtitle with explanation
             const subtitle = document.createElement('p');
-            subtitle.className = 'text-gold/70 text-base mb-6';
-            subtitle.textContent = 'A detailed interpretation of your card';
+            subtitle.className = 'text-neutral-400 text-base mb-6 font-cairo font-medium'; // Use neutral color with medium weight
+            subtitle.textContent = 'A detailed interpretation of your card:';
             cardsContainer.appendChild(subtitle);
 
             addCardToReading(readingContainer, drawnCards[0], "Your Card");
@@ -192,14 +192,14 @@ function generateOverallReading() {
             // Replace loading with actual content
             cardsContainer.innerHTML = '';
             const readingTitle = document.createElement('h2');
-            readingTitle.className = 'text-3xl font-semibold mb-3 text-shadow-gold';
+            readingTitle.className = 'text-3xl font-bold font-cairo mb-3 text-primary'; // Use primary color with Cairo font
             readingTitle.textContent = 'Your Three-Card Spread';
             cardsContainer.appendChild(readingTitle);
 
             // Add a subtitle with explanation
             const subtitle = document.createElement('p');
-            subtitle.className = 'text-gold/70 text-base mb-6';
-            subtitle.textContent = 'Past, Present, and Future - revealing your journey';
+            subtitle.className = 'text-neutral-400 text-base mb-6 font-cairo font-medium'; // Use neutral color with medium weight
+            subtitle.textContent = 'Past, Present, and Future - revealing your journey:';
             cardsContainer.appendChild(subtitle);
 
             const positions = ["Past", "Present", "Future"];
@@ -209,13 +209,13 @@ function generateOverallReading() {
 
             // Create a visually distinct interpretation section
             const interpretation = document.createElement('div');
-            interpretation.classList.add('mt-12', 'p-8', 'bg-gold/5', 'rounded-lg', 'border-t-4', 'border-gold', 'text-left', 'w-full', 'shadow-lg', 'shadow-gold/10');
+            interpretation.classList.add('mt-12', 'p-6', 'md:p-8', 'bg-bgLighter/70', 'rounded-lg', 'border-t-4', 'border-primary', 'text-left', 'w-full', 'shadow-lg'); // Use bgLighter with primary border
 
             // Add a decorative element
             const decorElement = document.createElement('div');
             decorElement.classList.add('flex', 'justify-center', 'mb-6');
             const decorIcon = document.createElement('i');
-            decorIcon.classList.add('fas', 'fa-moon', 'text-3xl', 'text-gold');
+            decorIcon.classList.add('fas', 'fa-moon', 'text-3xl', 'text-primary');
             decorElement.appendChild(decorIcon);
             interpretation.appendChild(decorElement);
 
@@ -224,19 +224,19 @@ function generateOverallReading() {
             titleContainer.classList.add('flex', 'items-center', 'justify-center', 'mb-6');
 
             const interpretationTitle = document.createElement('h3');
-            interpretationTitle.classList.add('text-2xl', 'font-semibold', 'text-gold', 'text-center');
+            interpretationTitle.classList.add('text-2xl', 'font-bold', 'text-primary', 'text-center', 'font-cairo'); // Use Cairo with bold weight
             interpretationTitle.textContent = 'Combined Meaning';
             titleContainer.appendChild(interpretationTitle);
             interpretation.appendChild(titleContainer);
 
             // Add a separator
             const separator = document.createElement('div');
-            separator.classList.add('w-24', 'h-px', 'bg-gold/50', 'mx-auto', 'mb-6');
+            separator.classList.add('w-24', 'h-px', 'bg-primary/50', 'mx-auto', 'mb-6');
             interpretation.appendChild(separator);
 
             // Add the interpretation text
             const interpretationText = document.createElement('p');
-            interpretationText.classList.add('text-lg', 'leading-relaxed', 'whitespace-pre-line', 'text-gold/90');
+            interpretationText.classList.add('text-base', 'md:text-lg', 'leading-relaxed', 'whitespace-pre-line', 'text-neutral-200', 'font-cairo', 'font-normal'); // Use neutral color with normal weight
             interpretationText.textContent = generateCombinedMeaning(drawnCards);
             interpretation.appendChild(interpretationText);
 
@@ -256,7 +256,7 @@ function generateOverallReading() {
 function addCardToReading(container, card, position) {
     // Create a card reading container with flex layout
     const cardElement = document.createElement('div');
-    cardElement.classList.add('mb-8', 'p-5', 'bg-gold/5', 'rounded-lg', 'border-l-4', 'border-gold', 'flex', 'flex-col', 'md:flex-row', 'gap-4', 'items-center', 'md:items-start');
+    cardElement.classList.add('mb-8', 'p-5', 'bg-bgLighter/70', 'rounded-lg', 'border-l-4', 'border-primary', 'flex', 'flex-col', 'md:flex-row', 'gap-4', 'items-center', 'md:items-start', 'shadow-md'); // Use bgLighter with primary border
 
     // Add card image
     const imgContainer = document.createElement('div');
@@ -265,7 +265,7 @@ function addCardToReading(container, card, position) {
     const img = document.createElement('img');
     img.src = `cards/${card}.jpg`;
     img.alt = card;
-    img.classList.add('h-full', 'object-contain', 'rounded', 'border', 'border-gold/50');
+    img.classList.add('h-full', 'object-contain', 'rounded', 'border', 'border-primary/50');
     imgContainer.appendChild(img);
     cardElement.appendChild(imgContainer);
 
@@ -275,13 +275,13 @@ function addCardToReading(container, card, position) {
 
     // Add title
     const title = document.createElement('h3');
-    title.classList.add('text-xl', 'font-semibold', 'text-gold', 'mb-3');
+    title.classList.add('text-xl', 'font-semibold', 'text-primary', 'mb-2', 'font-cairo'); // Use Cairo
     title.textContent = `${position}: ${formatCardName(card)}`;
     textContainer.appendChild(title);
 
     // Add description
     const description = document.createElement('p');
-    description.classList.add('text-lg', 'leading-relaxed');
+    description.classList.add('text-base', 'text-neutral-300', 'leading-relaxed', 'font-cairo', 'font-normal'); // Use neutral color with normal weight
     description.textContent = getCardDescription(card);
     textContainer.appendChild(description);
 
@@ -292,9 +292,9 @@ function addCardToReading(container, card, position) {
 function newReading() {
     cardsContainer.innerHTML = '';
     drawnCards = [];
-    drawOneCardBtn.style.display = 'inline-block';
-    drawThreeCardsBtn.style.display = 'inline-block';
-    overallReadingBtn.style.display = 'none';
+    drawOneCardBtn.classList.remove('hidden');
+    drawThreeCardsBtn.classList.remove('hidden');
+    overallReadingBtn.classList.add('hidden');
 }
 
 function formatCardName(card) {

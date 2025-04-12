@@ -1,108 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
+<head>
     <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
     <script type="module">
         import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
-    
+
         createChat({
             webhookUrl: 'https://n8n.s2.moussa2100.com/webhook/13912d70-d67d-4142-86f8-5fffa85a50bd/chat',
             initialMessages: ['🌟 Welcome, Seeker...🔮 I am Jasmine, your digital tarot guide through the mystical realms. 🃏 The cards whisper secrets of your past, present, and future... ✨ What mysteries shall we uncover together? 🌙 Ask your question, and let the journey begin...'],
             mode: 'window',
             showWelcomeScreen: true,
             i18n: { 		en: { 			title: 'Tarot Teller Gemini🔮🌙', 			subtitle: "🔮 Ask Jasmine for a deeper look into your destiny.", 			footer: '', 			getStarted: 'New Conversation', 			inputPlaceholder: 'Type your question..', 		}, 	},
- 
- 
+
+
         });
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarot Teller</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config (Now primarily in css/styles.css or via build step if applicable) -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        gold: '#D4AF37',
-                        darkGold: '#B8860B',
-                        mystical: '#2d0a31',
+                        primary: '#b384fc', // New primary lavender color
+                        primaryDark: '#9a6ff0', // Darker shade of lavender
+                        primaryLight: '#c89aff', // Lighter shade of lavender
+                        bgDark: '#231e30', // Dark purple background
+                        bgDarker: '#1a1625', // Darker shade for gradients
+                        bgLighter: '#2c2639', // Lighter shade for gradients
+                        neutral: { // Added neutral tones
+                            100: '#f5f5f5',
+                            200: '#e5e5e5',
+                            300: '#d4d4d4',
+                            500: '#737373',
+                            700: '#404040',
+                            800: '#262626',
+                            900: '#171717',
+                        },
                     },
                     fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
                         cormorant: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'], // Added sans-serif
+                    },
+                    fontWeight: {
+                        thin: '200',
+                        light: '300',
+                        normal: '400',
+                        medium: '500',
+                        semibold: '600',
+                        bold: '700',
+                        extrabold: '800',
+                        black: '900',
                     },
                 },
             },
         }
     </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .text-shadow-gold {
-                text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            }
-            .gold-glow {
-                filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
-            }
-            .btn-hover {
-                @apply hover:bg-gold/10 hover:transform hover:-translate-y-1 hover:shadow-lg hover:shadow-gold/20 transition-all duration-300;
-            }
-            .card-hover {
-                @apply hover:transform hover:-translate-y-2 hover:shadow-lg hover:shadow-gold/30 transition-all duration-300;
-            }
-            .card-flip {
-                perspective: 1000px;
-                transform-style: preserve-3d;
-            }
-            .card-flip:hover .card-inner {
-                transform: rotateY(180deg);
-            }
-            .card-inner {
-                transition: transform 0.8s;
-                transform-style: preserve-3d;
-            }
-            .card-front, .card-back {
-                -webkit-backface-visibility: hidden;
-                backface-visibility: hidden;
-            }
-            .card-back {
-                transform: rotateY(180deg);
-            }
-            .pulse-animation {
-                animation: pulse 1.5s infinite;
-            }
-            @keyframes pulse {
-                0% { opacity: 0.6; }
-                50% { opacity: 1; }
-                100% { opacity: 0.6; }
-            }
-        }
-    </style>
+    <!-- Custom CSS - includes moved utilities -->
     <!-- Custom CSS for specific elements -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-black min-h-screen flex items-center justify-center font-cormorant text-gold p-4">
-    <div id="landing-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-black/80 border-2 border-gold rounded-lg p-8 text-center">
+<body class="bg-bgDark min-h-screen flex items-center justify-center font-cairo font-normal text-neutral-200 p-4">
+    <div id="landing-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-gradient-to-b from-bgLighter to-bgDarker border border-primary/30 rounded-lg shadow-xl p-8 md:p-12 text-center">
         <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="w-40 h-auto mb-8 gold-glow">
-        <h1 class="text-5xl font-bold mb-6 text-shadow-gold">Tarot Teller</h1>
-        <p class="text-xl mb-10 max-w-lg">Find your answers with the ancient art of tarot</p>
-        <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="startButton">
-            <i class="fas fa-sparkles mr-2"></i> What is my fate?
+        <h1 class="text-5xl font-extrabold font-cairo mb-4 text-primary">Tarot Teller</h1>
+        <p class="text-lg font-medium text-neutral-300 mb-8 max-w-lg">Find your answers with the ancient art of tarot</p>
+        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300" id="startButton">
+            <i class="fas fa-wand-sparkles mr-2"></i> Begin Your Reading
         </button>
     </div>
 
-    <div id="tarot-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-black/80 border-2 border-gold rounded-lg p-8 hidden">
-        <h1 class="text-4xl font-bold mb-8 text-shadow-gold">Your Reading</h1>
+    <div id="tarot-page" class="w-full max-w-5xl mx-auto flex flex-col items-center bg-gradient-to-b from-bgLighter to-bgDarker border border-primary/30 rounded-lg shadow-xl p-8 md:p-12 hidden">
+        <h1 class="text-4xl font-bold font-cairo mb-8 text-primary">What do the cards say?</h1>
         <div class="flex flex-wrap justify-center gap-4 mb-8 w-full">
-            <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="drawOneCardBtn">
-                <i class="fas fa-wand-sparkles mr-2"></i> Single Card
+            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawOneCardBtn">
+                <i class="fas fa-square mr-2"></i> Single Card
             </button>
-            <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="drawThreeCardsBtn">
-                <i class="fas fa-wand-magic-sparkles mr-2"></i> Three Cards
+            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawThreeCardsBtn">
+                <i class="fas fa-clone mr-2"></i> Three Cards
             </button>
         </div>
 
@@ -110,14 +97,14 @@
             <!-- Cards will appear here -->
         </div>
 
-        <button class="bg-transparent text-gold border-2 border-gold rounded-full py-3 px-6 text-lg font-semibold btn-hover hidden" id="overallReadingBtn">
-            <i class="fas fa-book-open mr-2"></i> Reveal Meaning
+        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300 hidden mt-6" id="overallReadingBtn">
+            <i class="fas fa-book-open mr-2"></i> Reveal Overall Meaning
         </button>
         <div class="flex flex-wrap justify-center gap-4 mt-8 w-full">
-            <button class="bg-transparent text-emerald-400 border-2 border-emerald-400 rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="newReadingBtn">
+            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="newReadingBtn">
                 <i class="fas fa-rotate mr-2"></i> New Reading
             </button>
-            <button class="bg-transparent text-blue-400 border-2 border-blue-400 rounded-full py-3 px-6 text-lg font-semibold btn-hover" id="backToHomeBtn">
+            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="backToHomeBtn">
                 <i class="fas fa-house mr-2"></i> Back to Home
             </button>
         </div>
