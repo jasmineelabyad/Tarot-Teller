@@ -15,6 +15,29 @@
 
         });
     </script>
+
+
+<style>
+    .chat-toggle {
+      display: none !important;
+    }
+  
+    #custom-chat-button {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: #ff22d3;
+      color: #fff;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarot Teller</title>
@@ -73,6 +96,8 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-bgDark min-h-screen flex items-center justify-center font-cairo font-normal text-neutral-200 p-4">
+
+    <button id="custom-chat-button">🔮 Ask Jasmine for a deeper look into your destiny</button>
     <div id="landing-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-gradient-to-b from-bgLighter to-bgDarker border border-primary/30 rounded-lg shadow-xl p-8 md:p-12 text-center">
         <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="w-40 h-auto mb-8 gold-glow">
         <h1 class="text-5xl font-extrabold font-cairo mb-4 text-primary">Tarot Teller</h1>
