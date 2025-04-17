@@ -91,6 +91,17 @@
 </head>
 <body class="bg-bgDark min-h-screen flex items-center justify-center font-cairo font-normal text-neutral-200 p-4">
 
+    <!-- Sidebar for advice -->
+    <div id="advice-sidebar" class="sidebar">
+        <div class="sidebar-content">
+            <h2 class="text-2xl font-bold text-primary mb-4">Jasmine's Advice</h2>
+            <div id="advice-content" class="text-neutral-200 leading-relaxed"></div>
+        </div>
+    </div>
+    <button id="sidebar-toggle" class="sidebar-toggle">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+
     <button id="custom-chat-button">🔮 Ask Jasmine for a deeper look into your destiny</button>
     <div id="landing-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-gradient-to-b from-bgLighter to-bgDarker border border-primary/30 rounded-lg shadow-xl p-8 md:p-12 text-center">
         <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="w-40 h-auto mb-8 gold-glow">

@@ -5,6 +5,9 @@ const overallReadingBtn = document.getElementById('overallReadingBtn');
 const newReadingBtn = document.getElementById('newReadingBtn');
 const backToHomeBtn = document.getElementById('backToHomeBtn');
 const cardsContainer = document.getElementById('cards');
+const sidebar = document.getElementById('advice-sidebar');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const adviceContent = document.getElementById('advice-content');
 
 let drawnCards = [];
 
@@ -15,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
     overallReadingBtn.addEventListener('click', generateOverallReading);
     newReadingBtn.addEventListener('click', newReading);
     backToHomeBtn.addEventListener('click', backToHome);
+
+    // Sidebar toggle functionality
+    sidebarToggle.addEventListener('click', toggleSidebar);
 });
 
 function backToHome() {
@@ -86,9 +92,15 @@ function displayCard(cards) {
     instruction.innerHTML = '<i class="fas fa-info-circle mr-1"></i> Hover over cards to reveal their meanings';
     cardsContainer.appendChild(instruction);
 
+    // Create a container for all card-related content
+    const readingContainer = document.createElement('div');
+    readingContainer.className = 'w-full flex flex-col items-center';
+    cardsContainer.appendChild(readingContainer);
+
+    // Create the cards container with proper centering
     const cardsFlexContainer = document.createElement('div');
-    cardsFlexContainer.classList.add('flex', 'flex-wrap', 'justify-center', 'gap-6');
-    cardsContainer.appendChild(cardsFlexContainer);
+    cardsFlexContainer.className = 'flex flex-wrap justify-center gap-6 w-full';
+    readingContainer.appendChild(cardsFlexContainer);
 
     cards.forEach((card, index) => {
         const description = getCardDescription(card);
@@ -150,6 +162,18 @@ function displayCard(cards) {
 
         cardsFlexContainer.appendChild(cardElement);
     });
+
+    // Add the "Advise me" button after displaying cards
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'flex justify-center mt-6';
+
+    const adviseButton = document.createElement('button');
+    adviseButton.className = 'advice-button flex items-center justify-center';
+    adviseButton.innerHTML = '<i class="fas fa-magic mr-2"></i> Advise me';
+    adviseButton.addEventListener('click', () => getAdviceFromJasmine(cards));
+
+    buttonContainer.appendChild(adviseButton);
+    readingContainer.appendChild(buttonContainer);
 }
 
 function generateOverallReading() {
@@ -273,6 +297,11 @@ function newReading() {
     drawOneCardBtn.classList.remove('hidden');
     drawThreeCardsBtn.classList.remove('hidden');
     overallReadingBtn.classList.add('hidden');
+
+    // Close sidebar if open
+    if (sidebar.classList.contains('open')) {
+        toggleSidebar();
+    }
 }
 
 function formatCardName(card) {
@@ -394,6 +423,89 @@ function getPositionalMeaning(card, position) {
             return `Suggests potential outcomes, future trends, or advice regarding ${formattedName}. Its energy indicates what may lie ahead based on the current path.`;
         default:
             return "";
+    }
+}
+
+// Function to toggle the sidebar
+function toggleSidebar() {
+    sidebar.classList.toggle('open');
+    sidebarToggle.classList.toggle('open');
+
+    // Change the icon based on sidebar state
+    if (sidebar.classList.contains('open')) {
+        sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    } else {
+        sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    }
+}
+
+// Function to get advice from Jasmine API
+async function getAdviceFromJasmine(cards) {
+    try {
+        // Show loading in the sidebar
+        adviceContent.innerHTML = '<div class="pulse-animation">Consulting Jasmine...</div>';
+
+        // Open the sidebar if it's closed
+        if (!sidebar.classList.contains('open')) {
+            toggleSidebar();
+        }
+
+        // Format the cards as a comma-separated string
+        const cardNames = cards.map(card => formatCardName(card)).join(', ');
+
+        // Make the API call
+        const response = await fetch('https://n8n.s2.moussa2100.com/webhook/3e363cfe-9429-4fbf-b7c4-3ec930b76e14', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mycard: cardNames })
+        });
+
+        if (!response.ok) {
+            throw new Error(`API responded with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Format the output text with magical emojis
+        let outputText = data.output || data.advice || data.message || 'Jasmine has shared her wisdom with you.';
+
+        // Add some magical styling to the output
+        outputText = outputText.replace(/\n/g, '<br>');
+
+        // Display the advice in the sidebar with enhanced styling
+        adviceContent.innerHTML = `
+            <div class="mb-4 pb-4 border-b border-primary/30">
+                <div class="text-sm text-neutral-400 mb-2">Your cards:</div>
+                <div class="text-primary font-medium">${cardNames}</div>
+            </div>
+            <div class="p-4 bg-bgDarker/50 rounded-lg border border-primary/20 shadow-inner">
+                <div class="flex justify-center mb-3">
+                    <i class="fas fa-magic text-primary text-xl"></i>
+                </div>
+                <div class="prose prose-invert">
+                    ${outputText}
+                </div>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error('Error getting advice:', error);
+        adviceContent.innerHTML = `
+            <div class="mb-4 pb-4 border-b border-primary/30">
+                <div class="text-sm text-neutral-400 mb-2">Your cards:</div>
+                <div class="text-primary font-medium">${cardNames}</div>
+            </div>
+            <div class="text-red-400 p-4 border border-red-400/30 rounded-lg bg-red-400/10">
+                <div class="flex justify-center mb-3">
+                    <i class="fas fa-exclamation-circle text-red-400 text-xl"></i>
+                </div>
+                <div class="text-center">
+                    Unable to connect with Jasmine at this time. Please try again later.
+                </div>
+            </div>
+        `;
     }
 }
 

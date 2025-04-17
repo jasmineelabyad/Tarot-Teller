@@ -66,6 +66,79 @@
   100% { opacity: 0.7; }
 }
 
+/* Sidebar styles */
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background-color: #2c2639;
+  overflow-x: hidden;
+  transition: 0.5s;
+  z-index: 1000;
+  border-right: 1px solid #b384fc;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.open {
+  width: 350px;
+}
+
+.sidebar-content {
+  padding: 20px;
+  color: #f5f5f5;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.sidebar-content .prose-invert {
+  color: #f5f5f5;
+  white-space: pre-line;
+}
+
+.sidebar.open .sidebar-content {
+  opacity: 1;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #b384fc;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: left 0.5s;
+}
+
+.sidebar-toggle.open {
+  left: 350px;
+}
+
+.advice-button {
+  background-color: #b384fc;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: auto;
+  max-width: 200px;
+}
+
+.advice-button:hover {
+  background-color: #9a6ff0;
+}
+
 
 :root {
 	--chat--color-primary: #b384fc;
