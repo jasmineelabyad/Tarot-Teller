@@ -21,7 +21,7 @@
     .chat-toggle {
       display: none !important;
     }
-  
+
     #custom-chat-button {
       position: fixed;
       bottom: 80px;
@@ -41,28 +41,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarot Teller</title>
-    <!-- Google Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Tailwind CSS -->
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tailwind Config (Now primarily in css/styles.css or via build step if applicable) -->
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#b384fc', // New primary lavender color
-                        primaryDark: '#9a6ff0', // Darker shade of lavender
-                        primaryLight: '#c89aff', // Lighter shade of lavender
-                        bgDark: '#231e30', // Dark purple background
-                        bgDarker: '#1a1625', // Darker shade for gradients
-                        bgLighter: '#2c2639', // Lighter shade for gradients
-                        neutral: { // Added neutral tones
+                        primary: '#b384fc',
+                        primaryDark: '#9a6ff0',
+                        primaryLight: '#c89aff',
+                        bgDark: '#231e30',
+                        bgDarker: '#1a1625',
+                        bgLighter: '#2c2639',
+                        neutral: {
                             100: '#f5f5f5',
                             200: '#e5e5e5',
                             300: '#d4d4d4',
@@ -75,7 +75,7 @@
                     fontFamily: {
                         cairo: ['Cairo', 'sans-serif'],
                         cormorant: ['Cormorant Garamond', 'serif'],
-                        sans: ['Inter', 'sans-serif'], // Added sans-serif
+                        sans: ['Inter', 'sans-serif'],
                     },
                     fontWeight: {
                         thin: '200',
@@ -91,8 +91,8 @@
             },
         }
     </script>
-    <!-- Custom CSS - includes moved utilities -->
-    <!-- Custom CSS for specific elements -->
+
+
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-bgDark min-h-screen flex items-center justify-center font-cairo font-normal text-neutral-200 p-4">
@@ -119,7 +119,7 @@
         </div>
 
         <div class="flex flex-wrap justify-center gap-6 w-full p-4 overflow-x-auto" id="cards">
-            <!-- Cards will appear here -->
+
         </div>
 
         <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300 hidden mt-6" id="overallReadingBtn">

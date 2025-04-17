@@ -7,7 +7,7 @@ import random
 app = Flask(__name__)
 
 card_descriptions = {
-    # Major Arcana 
+
     "the_fool": "New beginnings, spontaneity, a leap of faith. Unlimited potential.",
     "the_magician": "Manifestation, resourcefulness, power. Turning visions into reality.",
     "the_high_priestess": "Intuition, mystery, subconscious. Trust your inner voice.",
@@ -31,7 +31,7 @@ card_descriptions = {
     "judgement": "Rebirth, inner calling. Answering life's purpose.",
     "the_world": "Completion, accomplishment, wholeness. The end of a cycle.",
 
-    # Wands 
+
     "ace_of_wands": "Inspiration, new opportunities. Creative energy spark.",
     "two_of_wands": "Planning, discovery. Making bold choices.",
     "three_of_wands": "Progress, expansion. Looking ahead with optimism.",
@@ -47,7 +47,7 @@ card_descriptions = {
     "queen_of_wands": "Courage, determination. Vibrant, charismatic leader.",
     "king_of_wands": "Vision, leadership. Natural authority and charisma.",
 
-    # Cups 
+
     "ace_of_cups": "New emotions, love. Spiritual fulfillment.",
     "two_of_cups": "Partnership, connection. Mutual respect and harmony.",
     "three_of_cups": "Celebration, friendship. Joyful gatherings.",
@@ -63,7 +63,7 @@ card_descriptions = {
     "queen_of_cups": "Compassion, empathy. Emotional wisdom.",
     "king_of_cups": "Emotional balance. Wisdom and control.",
 
-    # Swords 
+
     "ace_of_swords": "Breakthrough, clarity. Mental clarity triumphs.",
     "two_of_swords": "Indecision, stalemate. Difficult choices.",
     "three_of_swords": "Heartbreak, grief. Emotional pain and sorrow.",
@@ -79,7 +79,7 @@ card_descriptions = {
     "queen_of_swords": "Independence, clarity. Sharp intellect.",
     "king_of_swords": "Authority, truth. Intellectual power.",
 
-    # Pentacles 
+
     "ace_of_pentacles": "Opportunity, prosperity. New financial beginnings.",
     "two_of_pentacles": "Balance, adaptability. Juggling priorities.",
     "three_of_pentacles": "Teamwork, collaboration. Building skills.",

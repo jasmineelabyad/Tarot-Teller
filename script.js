@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     newReadingBtn.addEventListener('click', newReading);
     backToHomeBtn.addEventListener('click', backToHome);
 
-    // Sidebar toggle functionality
+
     sidebarToggle.addEventListener('click', toggleSidebar);
 });
 
@@ -45,7 +45,7 @@ function startTarot() {
     backToHomeBtn.classList.remove('hidden');
 }
 
-// API base URL - change this to your FastAPI server URL
+
 const API_BASE_URL = 'http://localhost:5000';
 
 async function drawOneCard() {
@@ -92,12 +92,12 @@ function displayCard(cards) {
     instruction.innerHTML = '<i class="fas fa-info-circle mr-1"></i> Hover over cards to reveal their meanings';
     cardsContainer.appendChild(instruction);
 
-    // Create a container for all card-related content
+
     const readingContainer = document.createElement('div');
     readingContainer.className = 'w-full flex flex-col items-center';
     cardsContainer.appendChild(readingContainer);
 
-    // Create the cards container with proper centering
+
     const cardsFlexContainer = document.createElement('div');
     cardsFlexContainer.className = 'flex flex-wrap justify-center gap-6 w-full';
     readingContainer.appendChild(cardsFlexContainer);
@@ -163,7 +163,7 @@ function displayCard(cards) {
         cardsFlexContainer.appendChild(cardElement);
     });
 
-    // Add the "Advise me" button after displaying cards
+
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'flex justify-center mt-6';
 
@@ -298,7 +298,7 @@ function newReading() {
     drawThreeCardsBtn.classList.remove('hidden');
     overallReadingBtn.classList.add('hidden');
 
-    // Close sidebar if open
+
     if (sidebar.classList.contains('open')) {
         toggleSidebar();
     }
@@ -319,7 +319,7 @@ function showErrorMessage(message) {
 
 function getCardDescription(card) {
     const cardDescriptions = {
-        // Major Arcana
+    
         "the_fool": "New beginnings, spontaneity, a leap of faith. The Fool represents unlimited potential and the start of a journey.",
         "the_magician": "Manifestation, resourcefulness, power. The Magician shows you have all the tools you need to create your reality.",
         "the_high_priestess": "Intuition, mystery, the subconscious. The High Priestess calls you to trust your inner wisdom.",
@@ -344,7 +344,7 @@ function getCardDescription(card) {
         "judgement": "Rebirth, inner calling, absolution. Judgement represents awakening to one's true purpose.",
         "the_world": "Completion, wholeness, accomplishment. The World represents fulfillment and successful conclusions.",
 
-        // Pentacles
+    
         "ace_of_pentacles": "New financial opportunity, prosperity, manifestation.",
         "two_of_pentacles": "Balance, adaptability, resource juggling.",
         "three_of_pentacles": "Teamwork, collaboration, craftsmanship.",
@@ -360,7 +360,7 @@ function getCardDescription(card) {
         "queen_of_pentacles": "Practicality, nurturing, financial security.",
         "king_of_pentacles": "Abundance, prosperity, financial mastery.",
 
-        // Swords
+    
         "ace_of_swords": "Mental clarity, breakthroughs, new ideas.",
         "two_of_swords": "Indecision, stalemate, difficult choices.",
         "three_of_swords": "Heartbreak, sorrow, emotional pain.",
@@ -376,7 +376,7 @@ function getCardDescription(card) {
         "queen_of_swords": "Independence, clear boundaries, objectivity.",
         "king_of_swords": "Intellect, authority, truth-seeking.",
 
-        // Cups
+    
         "ace_of_cups": "New love, emotional awakening, intuition.",
         "two_of_cups": "Partnership, mutual attraction, connection.",
         "three_of_cups": "Celebration, friendship, community.",
@@ -392,7 +392,7 @@ function getCardDescription(card) {
         "queen_of_cups": "Compassion, emotional security, intuition.",
         "king_of_cups": "Emotional balance, wisdom, diplomacy.",
 
-        // Wands
+    
         "ace_of_wands": "Inspiration, new opportunities, creative energy.",
         "two_of_wands": "Planning, future vision, progress.",
         "three_of_wands": "Expansion, foresight, overseas opportunities.",
@@ -426,12 +426,12 @@ function getPositionalMeaning(card, position) {
     }
 }
 
-// Function to toggle the sidebar
+
 function toggleSidebar() {
     sidebar.classList.toggle('open');
     sidebarToggle.classList.toggle('open');
 
-    // Change the icon based on sidebar state
+
     if (sidebar.classList.contains('open')) {
         sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>';
     } else {
@@ -439,21 +439,21 @@ function toggleSidebar() {
     }
 }
 
-// Function to get advice from Jasmine API
+
 async function getAdviceFromJasmine(cards) {
     try {
-        // Show loading in the sidebar
+
         adviceContent.innerHTML = '<div class="pulse-animation">Consulting Jasmine...</div>';
 
-        // Open the sidebar if it's closed
+
         if (!sidebar.classList.contains('open')) {
             toggleSidebar();
         }
 
-        // Format the cards as a comma-separated string
+
         const cardNames = cards.map(card => formatCardName(card)).join(', ');
 
-        // Make the API call
+
         const response = await fetch('https://n8n.s2.moussa2100.com/webhook/3e363cfe-9429-4fbf-b7c4-3ec930b76e14', {
             method: 'POST',
             headers: {
@@ -468,13 +468,13 @@ async function getAdviceFromJasmine(cards) {
 
         const data = await response.json();
 
-        // Format the output text with magical emojis
+
         let outputText = data.output || data.advice || data.message || 'Jasmine has shared her wisdom with you.';
 
-        // Add some magical styling to the output
+
         outputText = outputText.replace(/\n/g, '<br>');
 
-        // Display the advice in the sidebar with enhanced styling
+
         adviceContent.innerHTML = `
             <div class="mb-4 pb-4 border-b border-primary/30">
                 <div class="text-sm text-neutral-400 mb-2">Your cards:</div>
