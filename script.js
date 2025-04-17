@@ -50,28 +50,84 @@ const API_BASE_URL = 'http://localhost:5000';
 
 async function drawOneCard() {
     try {
-        const response = await fetch(`${API_BASE_URL}/draw_card`);
+        const response = await fetch(`${API_BASE_URL}/draw_card`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            },
+            mode: 'cors'
+        });
+
+        if (!response.ok) {
+            throw new Error(`API responded with status: ${response.status}`);
+        }
+
         const data = await response.json();
         drawnCards = [data.card];
         updateButtonStates();
         displayCard(drawnCards);
     } catch (error) {
         console.error('Error fetching card:', error);
-        showErrorMessage('Failed to draw a card. Please try again.');
+        const randomCard = getRandomCard();
+        drawnCards = [randomCard];
+        updateButtonStates();
+        displayCard(drawnCards);
     }
 }
 
 async function drawThreeCards() {
     try {
-        const response = await fetch(`${API_BASE_URL}/draw_three_cards`);
+        const response = await fetch(`${API_BASE_URL}/draw_three_cards`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            },
+            mode: 'cors'
+        });
+
+        if (!response.ok) {
+            throw new Error(`API responded with status: ${response.status}`);
+        }
+
         const data = await response.json();
         drawnCards = data.cards;
         updateButtonStates();
         displayCard(drawnCards);
     } catch (error) {
         console.error('Error fetching cards:', error);
-        showErrorMessage('Failed to draw cards. Please try again.');
+        drawnCards = [getRandomCard(), getRandomCard(), getRandomCard()];
+        updateButtonStates();
+        displayCard(drawnCards);
     }
+}
+
+function getRandomCard() {
+    const allCards = [
+        "the_fool", "the_magician", "the_high_priestess", "the_empress",
+        "the_emperor", "the_hierophant", "the_lovers", "the_chariot",
+        "strength", "the_hermit", "the_wheel_of_fortune", "justice",
+        "the_hanged_man", "death", "temperance", "the_devil",
+        "the_tower", "the_star", "the_moon", "the_sun",
+        "judgement", "the_world",
+        "ace_of_pentacles", "two_of_pentacles", "three_of_pentacles", "four_of_pentacles",
+        "five_of_pentacles", "six_of_pentacles", "seven_of_pentacles", "eight_of_pentacles",
+        "nine_of_pentacles", "ten_of_pentacles", "page_of_pentacles", "knight_of_pentacles",
+        "queen_of_pentacles", "king_of_pentacles",
+        "ace_of_swords", "two_of_swords", "three_of_swords", "four_of_swords",
+        "five_of_swords", "six_of_swords", "seven_of_swords", "eight_of_swords",
+        "nine_of_swords", "ten_of_swords", "page_of_swords", "knight_of_swords",
+        "queen_of_swords", "king_of_swords",
+        "ace_of_cups", "two_of_cups", "three_of_cups", "four_of_cups",
+        "five_of_cups", "six_of_cups", "seven_of_cups", "eight_of_cups",
+        "nine_of_cups", "ten_of_cups", "page_of_cups", "knight_of_cups",
+        "queen_of_cups", "king_of_cups",
+        "ace_of_wands", "two_of_wands", "three_of_wands", "four_of_wands",
+        "five_of_wands", "six_of_wands", "seven_of_wands", "eight_of_wands",
+        "nine_of_wands", "ten_of_wands", "page_of_wands", "knight_of_wands",
+        "queen_of_wands", "king_of_wands"
+    ];
+    const randomIndex = Math.floor(Math.random() * allCards.length);
+    return allCards[randomIndex];
 }
 
 function updateButtonStates() {
@@ -319,7 +375,7 @@ function showErrorMessage(message) {
 
 function getCardDescription(card) {
     const cardDescriptions = {
-    
+
         "the_fool": "New beginnings, spontaneity, a leap of faith. The Fool represents unlimited potential and the start of a journey.",
         "the_magician": "Manifestation, resourcefulness, power. The Magician shows you have all the tools you need to create your reality.",
         "the_high_priestess": "Intuition, mystery, the subconscious. The High Priestess calls you to trust your inner wisdom.",
@@ -344,7 +400,7 @@ function getCardDescription(card) {
         "judgement": "Rebirth, inner calling, absolution. Judgement represents awakening to one's true purpose.",
         "the_world": "Completion, wholeness, accomplishment. The World represents fulfillment and successful conclusions.",
 
-    
+
         "ace_of_pentacles": "New financial opportunity, prosperity, manifestation.",
         "two_of_pentacles": "Balance, adaptability, resource juggling.",
         "three_of_pentacles": "Teamwork, collaboration, craftsmanship.",
@@ -360,7 +416,7 @@ function getCardDescription(card) {
         "queen_of_pentacles": "Practicality, nurturing, financial security.",
         "king_of_pentacles": "Abundance, prosperity, financial mastery.",
 
-    
+
         "ace_of_swords": "Mental clarity, breakthroughs, new ideas.",
         "two_of_swords": "Indecision, stalemate, difficult choices.",
         "three_of_swords": "Heartbreak, sorrow, emotional pain.",
@@ -376,7 +432,7 @@ function getCardDescription(card) {
         "queen_of_swords": "Independence, clear boundaries, objectivity.",
         "king_of_swords": "Intellect, authority, truth-seeking.",
 
-    
+
         "ace_of_cups": "New love, emotional awakening, intuition.",
         "two_of_cups": "Partnership, mutual attraction, connection.",
         "three_of_cups": "Celebration, friendship, community.",
@@ -392,7 +448,7 @@ function getCardDescription(card) {
         "queen_of_cups": "Compassion, emotional security, intuition.",
         "king_of_cups": "Emotional balance, wisdom, diplomacy.",
 
-    
+
         "ace_of_wands": "Inspiration, new opportunities, creative energy.",
         "two_of_wands": "Planning, future vision, progress.",
         "three_of_wands": "Expansion, foresight, overseas opportunities.",
