@@ -1,13 +1,21 @@
 
-from flask import Flask
-from flask import render_template
-from flask import jsonify
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import random
 
-app = Flask(__name__)
+app = FastAPI()
+
+# Add CORS middleware to allow requests from the frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace with specific origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 card_descriptions = {
-    # Major Arcana 
     "the_fool": "New beginnings, spontaneity, a leap of faith. Unlimited potential.",
     "the_magician": "Manifestation, resourcefulness, power. Turning visions into reality.",
     "the_high_priestess": "Intuition, mystery, subconscious. Trust your inner voice.",
@@ -31,7 +39,6 @@ card_descriptions = {
     "judgement": "Rebirth, inner calling. Answering life's purpose.",
     "the_world": "Completion, accomplishment, wholeness. The end of a cycle.",
 
-    # Wands 
     "ace_of_wands": "Inspiration, new opportunities. Creative energy spark.",
     "two_of_wands": "Planning, discovery. Making bold choices.",
     "three_of_wands": "Progress, expansion. Looking ahead with optimism.",
@@ -47,7 +54,6 @@ card_descriptions = {
     "queen_of_wands": "Courage, determination. Vibrant, charismatic leader.",
     "king_of_wands": "Vision, leadership. Natural authority and charisma.",
 
-    # Cups 
     "ace_of_cups": "New emotions, love. Spiritual fulfillment.",
     "two_of_cups": "Partnership, connection. Mutual respect and harmony.",
     "three_of_cups": "Celebration, friendship. Joyful gatherings.",
@@ -63,7 +69,6 @@ card_descriptions = {
     "queen_of_cups": "Compassion, empathy. Emotional wisdom.",
     "king_of_cups": "Emotional balance. Wisdom and control.",
 
-    # Swords 
     "ace_of_swords": "Breakthrough, clarity. Mental clarity triumphs.",
     "two_of_swords": "Indecision, stalemate. Difficult choices.",
     "three_of_swords": "Heartbreak, grief. Emotional pain and sorrow.",
@@ -79,7 +84,6 @@ card_descriptions = {
     "queen_of_swords": "Independence, clarity. Sharp intellect.",
     "king_of_swords": "Authority, truth. Intellectual power.",
 
-    # Pentacles 
     "ace_of_pentacles": "Opportunity, prosperity. New financial beginnings.",
     "two_of_pentacles": "Balance, adaptability. Juggling priorities.",
     "three_of_pentacles": "Teamwork, collaboration. Building skills.",
@@ -96,23 +100,56 @@ card_descriptions = {
     "king_of_pentacles": "Wealth, security. Business acumen."
 }
 
-all_cards = list(card_descriptions.keys())
+all_cards = [
+    # Major Arcana
+    "the_fool", "the_magician", "the_high_priestess", "the_empress",
+    "the_emperor", "the_hierophant", "the_lovers", "the_chariot",
+    "strength", "the_hermit", "the_wheel_of_fortune", "justice",
+    "the_hanged_man", "death", "temperance", "the_devil",
+    "the_tower", "the_star", "the_moon", "the_sun",
+    "judgement", "the_world",
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+    # Pentacles
+    "ace_of_pentacles", "two_of_pentacles", "three_of_pentacles", "four_of_pentacles",
+    "five_of_pentacles", "six_of_pentacles", "seven_of_pentacles", "eight_of_pentacles",
+    "nine_of_pentacles", "ten_of_pentacles",
+    "page_of_pentacles", "knight_of_pentacles", "queen_of_pentacles", "king_of_pentacles",
 
-@app.route('/draw_card')
-def draw_card():
+    # Swords
+    "ace_of_swords", "two_of_swords", "three_of_swords", "four_of_swords",
+    "five_of_swords", "six_of_swords", "seven_of_swords", "eight_of_swords",
+    "nine_of_swords", "ten_of_swords",
+    "page_of_swords", "knight_of_swords", "queen_of_swords", "king_of_swords",
+
+    # Cups
+    "ace_of_cups", "two_of_cups", "three_of_cups", "four_of_cups",
+    "five_of_cups", "six_of_cups", "seven_of_cups", "eight_of_cups",
+    "nine_of_cups", "ten_of_cups",
+    "page_of_cups", "knight_of_cups", "queen_of_cups", "king_of_cups",
+
+    # Wands
+    "ace_of_wands", "two_of_wands", "three_of_wands", "four_of_wands",
+    "five_of_wands", "six_of_wands", "seven_of_wands", "eight_of_wands",
+    "nine_of_wands", "ten_of_wands",
+    "page_of_wands", "knight_of_wands", "queen_of_wands", "king_of_wands"
+]
+
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the Tarot Teller API"}
+
+@app.get("/draw_card")
+async def draw_card():
     card = random.choice(all_cards)
     description = card_descriptions.get(card, "No description available.")
-    return jsonify({"card": card, "description": description})
+    return JSONResponse({"card": card, "description": description})
 
-@app.route('/draw_three_cards')
-def draw_three_cards():
+@app.get("/draw_three_cards")
+async def draw_three_cards():
     drawn_cards = random.sample(all_cards, 3)
     descriptions = {card: card_descriptions.get(card, "No description available.") for card in drawn_cards}
-    return jsonify({"cards": drawn_cards, "descriptions": descriptions})
+    return JSONResponse({"cards": drawn_cards, "descriptions": descriptions})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import uvicorn
+    uvicorn.run("app:app", host="127.0.0.1", port=5000, reload=True)
