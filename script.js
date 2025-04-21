@@ -1,26 +1,98 @@
-const startButton = document.getElementById('startButton');
-const drawOneCardBtn = document.getElementById('drawOneCardBtn');
-const drawThreeCardsBtn = document.getElementById('drawThreeCardsBtn');
-const overallReadingBtn = document.getElementById('overallReadingBtn');
-const newReadingBtn = document.getElementById('newReadingBtn');
-const backToHomeBtn = document.getElementById('backToHomeBtn');
-const cardsContainer = document.getElementById('cards');
-const sidebar = document.getElementById('advice-sidebar');
-const sidebarToggle = document.getElementById('sidebar-toggle');
-const adviceContent = document.getElementById('advice-content');
+
+let startButton;
+let drawOneCardBtn;
+let drawThreeCardsBtn;
+let overallReadingBtn;
+let newReadingBtn;
+let backToHomeBtn;
+let cardsContainer;
+let sidebar;
+let sidebarToggle;
+let adviceContent;
 
 let drawnCards = [];
 
 document.addEventListener('DOMContentLoaded', function() {
-    startButton.addEventListener('click', startTarot);
-    drawOneCardBtn.addEventListener('click', async () => await drawOneCard());
-    drawThreeCardsBtn.addEventListener('click', async () => await drawThreeCards());
-    overallReadingBtn.addEventListener('click', generateOverallReading);
-    newReadingBtn.addEventListener('click', newReading);
-    backToHomeBtn.addEventListener('click', backToHome);
+    console.log('DOM fully loaded');
 
+    startButton = document.getElementById('startButton');
+    drawOneCardBtn = document.getElementById('drawOneCardBtn');
+    drawThreeCardsBtn = document.getElementById('drawThreeCardsBtn');
+    overallReadingBtn = document.getElementById('overallReadingBtn');
+    newReadingBtn = document.getElementById('newReadingBtn');
+    backToHomeBtn = document.getElementById('backToHomeBtn');
+    cardsContainer = document.getElementById('cards');
+    sidebar = document.getElementById('advice-sidebar');
+    sidebarToggle = document.getElementById('sidebar-toggle');
+    adviceContent = document.getElementById('advice-content');
 
-    sidebarToggle.addEventListener('click', toggleSidebar);
+    const customChatButton = document.getElementById('custom-chat-button');
+    if (customChatButton) {
+        console.log('Custom chat button found');
+        customChatButton.addEventListener('click', function() {
+            console.log('Custom chat button clicked');
+            const chatToggle = document.querySelector('.chat-toggle');
+            if (chatToggle) {
+                console.log('Chat toggle found, clicking it');
+                chatToggle.click();
+            } else {
+                console.error('Chat toggle not found');
+            }
+        });
+    } else {
+        console.error('Custom chat button not found');
+    }
+
+    console.log('Elements initialized');
+
+    if (startButton) {
+        console.log('Start button found');
+        startButton.addEventListener('click', startTarot);
+    } else {
+        console.error('Start button not found');
+    }
+
+    if (drawOneCardBtn) {
+        console.log('Draw one card button found');
+        drawOneCardBtn.addEventListener('click', async () => await drawOneCard());
+    } else {
+        console.error('Draw one card button not found');
+    }
+
+    if (drawThreeCardsBtn) {
+        console.log('Draw three cards button found');
+        drawThreeCardsBtn.addEventListener('click', async () => await drawThreeCards());
+    } else {
+        console.error('Draw three cards button not found');
+    }
+
+    if (overallReadingBtn) {
+        console.log('Overall reading button found');
+        overallReadingBtn.addEventListener('click', generateOverallReading);
+    } else {
+        console.error('Overall reading button not found');
+    }
+
+    if (newReadingBtn) {
+        console.log('New reading button found');
+        newReadingBtn.addEventListener('click', newReading);
+    } else {
+        console.error('New reading button not found');
+    }
+
+    if (backToHomeBtn) {
+        console.log('Back to home button found');
+        backToHomeBtn.addEventListener('click', backToHome);
+    } else {
+        console.error('Back to home button not found');
+    }
+
+    if (sidebarToggle) {
+        console.log('Sidebar toggle found');
+        sidebarToggle.addEventListener('click', toggleSidebar);
+    } else {
+        console.error('Sidebar toggle not found');
+    }
 });
 
 function backToHome() {
@@ -35,21 +107,39 @@ function backToHome() {
 
 function startTarot() {
     console.log('Starting tarot reading...');
-    document.getElementById('landing-page').classList.add('hidden');
-    document.getElementById('tarot-page').classList.remove('hidden');
 
-    drawOneCardBtn.classList.remove('hidden');
-    drawThreeCardsBtn.classList.remove('hidden');
-    overallReadingBtn.classList.add('hidden');
-    newReadingBtn.classList.remove('hidden');
-    backToHomeBtn.classList.remove('hidden');
+    const landingPage = document.getElementById('landing-page');
+    const tarotPage = document.getElementById('tarot-page');
+
+    if (!landingPage) {
+        console.error('Landing page element not found');
+        return;
+    }
+
+    if (!tarotPage) {
+        console.error('Tarot page element not found');
+        return;
+    }
+
+    console.log('Hiding landing page, showing tarot page');
+    landingPage.classList.add('hidden');
+    tarotPage.classList.remove('hidden');
+
+    console.log('Updating button visibility');
+    if (drawOneCardBtn) drawOneCardBtn.classList.remove('hidden');
+    if (drawThreeCardsBtn) drawThreeCardsBtn.classList.remove('hidden');
+    if (overallReadingBtn) overallReadingBtn.classList.add('hidden');
+    if (newReadingBtn) newReadingBtn.classList.remove('hidden');
+    if (backToHomeBtn) backToHomeBtn.classList.remove('hidden');
 }
 
 
 const API_BASE_URL = 'http://localhost:5000';
 
 async function drawOneCard() {
+    console.log('Drawing one card...');
     try {
+        console.log('Fetching from API:', `${API_BASE_URL}/draw_card`);
         const response = await fetch(`${API_BASE_URL}/draw_card`, {
             method: 'GET',
             headers: {
@@ -58,16 +148,19 @@ async function drawOneCard() {
             mode: 'cors'
         });
 
+        console.log('API response status:', response.status);
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log('Card data received:', data);
         drawnCards = [data.card];
         updateButtonStates();
         displayCard(drawnCards);
     } catch (error) {
         console.error('Error fetching card:', error);
+        console.log('Using fallback random card');
         const randomCard = getRandomCard();
         drawnCards = [randomCard];
         updateButtonStates();
@@ -76,7 +169,9 @@ async function drawOneCard() {
 }
 
 async function drawThreeCards() {
+    console.log('Drawing three cards...');
     try {
+        console.log('Fetching from API:', `${API_BASE_URL}/draw_three_cards`);
         const response = await fetch(`${API_BASE_URL}/draw_three_cards`, {
             method: 'GET',
             headers: {
@@ -85,16 +180,19 @@ async function drawThreeCards() {
             mode: 'cors'
         });
 
+        console.log('API response status:', response.status);
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log('Cards data received:', data);
         drawnCards = data.cards;
         updateButtonStates();
         displayCard(drawnCards);
     } catch (error) {
         console.error('Error fetching cards:', error);
+        console.log('Using fallback random cards');
         drawnCards = [getRandomCard(), getRandomCard(), getRandomCard()];
         updateButtonStates();
         displayCard(drawnCards);

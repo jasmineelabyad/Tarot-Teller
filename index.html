@@ -3,16 +3,29 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
     <script type="module">
-        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
-
-        createChat({
-            webhookUrl: 'https://n8n.s2.moussa2100.com/webhook/13912d70-d67d-4142-86f8-5fffa85a50bd/chat',
-            initialMessages: ['🌟 Welcome, Seeker...🔮 I am Jasmine, your digital tarot guide through the mystical realms. 🃏 The cards whisper secrets of your past, present, and future... ✨ What mysteries shall we uncover together? 🌙 Ask your question, and let the journey begin...'],
-            mode: 'window',
-            showWelcomeScreen: true,
-            i18n: { 		en: { 			title: 'Tarot Teller Gemini🔮🌙', 			subtitle: "🔮 Ask Jasmine for a deeper look into your destiny.", 			footer: '', 			getStarted: 'New Conversation', 			inputPlaceholder: 'Type your question..', 		}, 	},
-
-
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                try {
+                    console.log('Initializing n8n chat...');
+                    import('https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js')
+                        .then(module => {
+                            const { createChat } = module;
+                            createChat({
+                                webhookUrl: 'https://n8n.s2.moussa2100.com/webhook/13912d70-d67d-4142-86f8-5fffa85a50bd/chat',
+                                initialMessages: ['🌟 Welcome, Seeker...🔮 I am Jasmine, your digital tarot guide through the mystical realms. 🃏 The cards whisper secrets of your past, present, and future... ✨ What mysteries shall we uncover together? 🌙 Ask your question, and let the journey begin...'],
+                                mode: 'window',
+                                showWelcomeScreen: true,
+                                i18n: { 		en: { 			title: 'Tarot Teller Gemini🔮🌙', 			subtitle: "🔮 Ask Jasmine for a deeper look into your destiny.", 			footer: '', 			getStarted: 'New Conversation', 			inputPlaceholder: 'Type your question..', 		}, 	},
+                            });
+                            console.log('n8n chat initialized successfully');
+                        })
+                        .catch(error => {
+                            console.error('Error initializing n8n chat:', error);
+                        });
+                } catch (error) {
+                    console.error('Error in chat initialization:', error);
+                }
+            }, 1000);
         });
     </script>
 
@@ -98,7 +111,7 @@
             <div id="advice-content" class="text-neutral-200 leading-relaxed"></div>
         </div>
     </div>
-    <button id="sidebar-toggle" class="sidebar-toggle">
+    <button id="sidebar-toggle" class="sidebar-toggle" onclick="toggleSidebar()">
         <i class="fas fa-chevron-right"></i>
     </button>
 
@@ -107,7 +120,7 @@
         <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="w-40 h-auto mb-8 gold-glow">
         <h1 class="text-5xl font-extrabold font-cairo mb-4 text-primary">Tarot Teller</h1>
         <p class="text-lg font-medium text-neutral-300 mb-8 max-w-lg">Find your answers with the ancient art of tarot</p>
-        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300" id="startButton">
+        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300" id="startButton" onclick="startTarot()">
             <i class="fas fa-wand-sparkles mr-2"></i> Begin Your Reading
         </button>
     </div>
@@ -115,10 +128,10 @@
     <div id="tarot-page" class="w-full max-w-5xl mx-auto flex flex-col items-center bg-gradient-to-b from-bgLighter to-bgDarker border border-primary/30 rounded-lg shadow-xl p-8 md:p-12 hidden">
         <h1 class="text-4xl font-bold font-cairo mb-8 text-primary">What do the cards say?</h1>
         <div class="flex flex-wrap justify-center gap-4 mb-8 w-full">
-            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawOneCardBtn">
+            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawOneCardBtn" onclick="drawOneCard()">
                 <i class="fas fa-square mr-2"></i> Single Card
             </button>
-            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawThreeCardsBtn">
+            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawThreeCardsBtn" onclick="drawThreeCards()">
                 <i class="fas fa-clone mr-2"></i> Three Cards
             </button>
         </div>
@@ -126,14 +139,14 @@
         <div class="flex flex-wrap justify-center gap-6 w-full p-4 overflow-x-auto" id="cards">
         </div>
 
-        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300 hidden mt-6" id="overallReadingBtn">
+        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300 hidden mt-6" id="overallReadingBtn" onclick="generateOverallReading()">
             <i class="fas fa-book-open mr-2"></i> Reveal Overall Meaning
         </button>
         <div class="flex flex-wrap justify-center gap-4 mt-8 w-full">
-            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="newReadingBtn">
+            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="newReadingBtn" onclick="newReading()">
                 <i class="fas fa-rotate mr-2"></i> New Reading
             </button>
-            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="backToHomeBtn">
+            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="backToHomeBtn" onclick="backToHome()">
                 <i class="fas fa-house mr-2"></i> Back to Home
             </button>
         </div>
