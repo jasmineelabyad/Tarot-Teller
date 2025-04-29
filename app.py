@@ -143,9 +143,19 @@ async def draw_card():
     description = card_descriptions.get(card, "No description available.")
     return JSONResponse({"card": card, "description": description})
 
+# @app.get("/draw_three_cards")
+# async def draw_three_cards():
+#     drawn_cards = random.sample(all_cards, 3)
+#     descriptions = {card: card_descriptions.get(card, "No description available.") for card in drawn_cards}
+#     return JSONResponse({"cards": drawn_cards, "descriptions": descriptions})
+
 @app.get("/draw_three_cards")
 async def draw_three_cards():
-    drawn_cards = random.sample(all_cards, 3)
+    unique_cards = list(set(all_cards))  
+    if len(unique_cards) < 3:
+        return JSONResponse({"error": "Not enough unique cards to draw three."}, status_code=400)
+
+    drawn_cards = random.sample(unique_cards, 3)
     descriptions = {card: card_descriptions.get(card, "No description available.") for card in drawn_cards}
     return JSONResponse({"cards": drawn_cards, "descriptions": descriptions})
 
