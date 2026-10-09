@@ -1,131 +1,66 @@
-# 🔮 Tarot Teller
+# Tarot Teller
 
-A mystical tarot card reading web application that offers insights into past, present, and future through beautifully designed digital tarot cards.
+A cinematic, mobile-friendly celestial guide with tarot readings, zodiac profiles, a browser-based birth chart, a 2026 retrograde tracker, live moon phases, and an embedded Jasmine chat.
 
-![Tarot Teller Screenshot](https://i.imgur.com/placeholder.jpg)
+## Features
 
-## ✨ Features
+- Animated home page with quick links to every guide
+- One-card and three-card tarot spreads for General, Love, Career, Spiritual Path, and Decision readings
+- Click/tap card flips, keyboard support, and reduced-motion support
+- Reflective full-reading summaries that work without a backend
+- Zodiac sign explorer
+- Birth chart reader for Sun, Moon, Rising, Mercury, Venus, Mars, Jupiter, and Saturn
+- Birthplace lookup with local-time conversion
+- 2026 planetary retrograde status
+- Living astrology calendar with Moon phases, eclipses, retrograde stations, zodiac seasons, and major planetary sign changes
+- Live 3D Moon phase and illumination display
+- Daily homepage astrology whisper based on the Moon, zodiac season, and active retrogrades
+- Embedded Jasmine chat powered by the existing n8n Chat Trigger workflow
+- Responsive layouts for phone, tablet, and desktop
 
-- **Interactive Tarot Readings**: Choose between single card or three-card spreads
-- **Detailed Card Interpretations**: Each card comes with detailed meanings and interpretations
-- **Past, Present, Future Analysis**: Three-card spreads provide insights into your timeline
-- **Hover Animations**: Flip cards to reveal their meanings with intuitive hover interactions
-- **AI-Powered Advice**: Get personalized advice from Jasmine based on your cards
-- **Collapsible Sidebar**: View Jasmine's advice in a convenient sidebar that can be toggled
-- **Responsive Design**: Works on desktop and mobile devices
-- **Dark Mode**: Elegant dark theme with purple accents for a mystical experience
+## Run locally
 
-## 🚀 Technologies Used
+The refreshed frontend works on its own:
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **Styling**: Tailwind CSS for responsive design
-- **Backend**: FastAPI for API endpoints
-- **Icons**: Font Awesome
-- **Fonts**: Google Fonts (Cairo)
-- **API Integration**: External advice API for personalized readings
-
-## 📋 Project Structure
-
-```
-tarot-teller/
-├── app.py                # FastAPI backend
-├── static_server.py      # Static file server
-├── index.html            # Main HTML file
-├── script.js             # JavaScript functionality
-├── css/
-│   └── styles.css        # Custom CSS styles
-├── cards/                # Tarot card images
-│   └── *.jpg             # Individual card images
-├── run.sh                # Script to run both servers
-├── run_api.sh            # Script to run just the API server
-└── run_frontend.sh       # Script to run just the frontend server
+```bash
+python3 static_server.py
 ```
 
-## 🛠️ Setup and Installation
+Then visit `http://localhost:8000`.
 
-### Prerequisites
+The original FastAPI endpoints are still available if you need them:
 
-- Python 3.7+
-- pip (Python package manager)
+```bash
+pip install -r requirements.txt
+python3 run.py
+```
 
-### Installation Steps
+## Chat setup
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/tarot-teller.git
-   cd tarot-teller
-   ```
+The site uses the production Chat Trigger webhook already present in the original project. In n8n:
 
-2. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+1. Make sure the workflow is active.
+2. Set the Chat Trigger to **Embedded Chat**.
+3. Add the deployed website domain to **Allowed Origins (CORS)**.
+4. Keep the production webhook URL in `index.html` synchronized with the Chat Trigger URL.
 
-3. Run the application:
-   ```bash
-   # Option 1: Run both servers (requires tmux)
-   ./run.sh
-   
-   # Option 2: Run servers separately
-   # Terminal 1
-   ./run_api.sh
-   
-   # Terminal 2
-   ./run_frontend.sh
-   ```
+## Data and calculation notes
 
-4. Open your browser and navigate to:
-   ```
-   http://localhost:8000
-   ```
+- Birthplace search uses the Open-Meteo Geocoding API.
+- Planetary positions use the vendored MIT-licensed Astronomy Engine 2.1.19 library.
+- A birth time is required for the Rising sign. When no time is supplied, the chart uses noon for planetary placements and clearly omits the Rising sign.
+- Astrology and tarot text is intended for reflection and entertainment, not scientific prediction or professional advice.
 
-## 🎮 How to Use
+## Project structure
 
-1. **Start a Reading**: Click "Begin Your Reading" on the landing page
-2. **Choose a Spread**: Select either "Single Card" or "Three Cards"
-3. **View Card Meanings**: Hover over cards to flip them and reveal their meanings
-4. **Get Overall Reading**: Click "Reveal Overall Meaning" for a comprehensive interpretation
-5. **Get AI Advice**: Click "Advise me" to receive personalized advice from Jasmine
-6. **Toggle Sidebar**: Use the sidebar toggle button to show/hide Jasmine's advice
-7. **Start Over**: Click "New Reading" to draw different cards or "Back to Home" to return to the landing page
-
-## 🧩 Programming Concepts Demonstrated
-
-This project demonstrates several key programming concepts:
-
-- **Object-Oriented Programming**: Structured code organization
-- **API Integration**: Communication with external services
-- **Asynchronous Programming**: Handling API requests with async/await
-- **DOM Manipulation**: Dynamic creation and modification of HTML elements
-- **Event Handling**: Interactive user interface with event listeners
-- **Data Structures**: Arrays and objects for managing card data
-- **Functions and Methods**: Modular code with reusable functions
-- **Error Handling**: Graceful handling of API errors
-- **Responsive Design**: Adapting to different screen sizes
-- **State Management**: Tracking application state (drawn cards, sidebar visibility)
-
-## 🔄 API Endpoints
-
-The FastAPI backend provides the following endpoints:
-
-- `GET /draw_card`: Returns a randomly selected tarot card
-- `GET /draw_three_cards`: Returns three randomly selected tarot cards
-- `POST https://n8n.s2.moussa2100.com/webhook/3e363cfe-9429-4fbf-b7c4-3ec930b76e14`: External API for personalized advice
-
-## 🎨 Customization
-
-You can customize the appearance by modifying:
-
-- `css/styles.css`: Custom styling
-- Tailwind configuration in `index.html`: Color scheme and typography
-
-## 📝 License
-
-This project is created for educational purposes as a class assignment.
-
-## 🙏 Acknowledgements
-
-- Card descriptions adapted from traditional tarot meanings
-- Special thanks to Jasmine for providing mystical advice
-- Icons provided by Font Awesome
-- Fonts provided by Google Fonts
+```text
+Tarot-Teller/
+├── index.html
+├── script.js
+├── css/styles.css
+├── vendor/astronomy.browser.min.js
+├── cards/
+├── static_server.py
+├── app.py
+└── requirements.txt
+```

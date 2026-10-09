@@ -1,157 +1,222 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
-    <script type="module">
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                try {
-                    console.log('Initializing n8n chat...');
-                    import('https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js')
-                        .then(module => {
-                            const { createChat } = module;
-                            createChat({
-                                webhookUrl: 'https://n8n.s2.moussa2100.com/webhook/13912d70-d67d-4142-86f8-5fffa85a50bd/chat',
-                                initialMessages: ['🌟 Welcome, Seeker...🔮 I am Jasmine, your digital tarot guide through the mystical realms. 🃏 The cards whisper secrets of your past, present, and future... ✨ What mysteries shall we uncover together? 🌙 Ask your question, and let the journey begin...'],
-                                mode: 'window',
-                                showWelcomeScreen: true,
-                                i18n: { 		en: { 			title: 'Tarot Teller Gemini🔮🌙', 			subtitle: "🔮 Ask Jasmine for a deeper look into your destiny.", 			footer: '', 			getStarted: 'New Conversation', 			inputPlaceholder: 'Type your question..', 		}, 	},
-                            });
-                            console.log('n8n chat initialized successfully');
-                        })
-                        .catch(error => {
-                            console.error('Error initializing n8n chat:', error);
-                        });
-                } catch (error) {
-                    console.error('Error in chat initialization:', error);
-                }
-            }, 1000);
-        });
-    </script>
-
-
-<style>
-    .chat-toggle {
-      display: none !important;
-    }
-
-    #custom-chat-button {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background-color: #ff22d3;
-      color: #fff;
-      padding: 15px 20px;
-      border: none;
-      border-radius: 20px;
-      font-size: 16px;
-      cursor: pointer;
-      z-index: 1000;
-    }
-  </style>
-
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarot Teller</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#b384fc',
-                        primaryDark: '#9a6ff0',
-                        primaryLight: '#c89aff',
-                        bgDark: '#231e30',
-                        bgDarker: '#1a1625',
-                        bgLighter: '#2c2639',
-                        neutral: {
-                            100: '#f5f5f5',
-                            200: '#e5e5e5',
-                            300: '#d4d4d4',
-                            500: '#737373',
-                            700: '#404040',
-                            800: '#262626',
-                            900: '#171717',
-                        },
-                    },
-                    fontFamily: {
-                        cairo: ['Cairo', 'sans-serif'],
-                        cormorant: ['Cormorant Garamond', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    fontWeight: {
-                        thin: '200',
-                        light: '300',
-                        normal: '400',
-                        medium: '500',
-                        semibold: '600',
-                        bold: '700',
-                        extrabold: '800',
-                        black: '900',
-                    },
-                },
-            },
-        }
-    </script>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tarot readings, astrology, retrograde guides, and live moon phases in one celestial space.">
+  <meta name="theme-color" content="#090814">
+  <title>Tarot Teller — Your celestial guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&family=DM+Sans:wght@400;500;600&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@n8n/chat@1.40.4/dist/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="vendor/astronomy.browser.min.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
-<body class="bg-bgDark min-h-screen flex items-center justify-center font-cairo font-normal text-neutral-200 p-4">
+<body>
+  <div class="stars stars--one" aria-hidden="true"></div>
+  <div class="stars stars--two" aria-hidden="true"></div>
+  <div class="mystic-symbols" aria-hidden="true"><span>☾</span><span>✧</span><span>♄</span><span>☼</span></div>
 
-
-    <div id="advice-sidebar" class="sidebar">
-        <div class="sidebar-content">
-            <h2 class="text-2xl font-bold text-primary mb-4">Jasmine's Advice</h2>
-            <div id="advice-content" class="text-neutral-200 leading-relaxed"></div>
-        </div>
-    </div>
-    <button id="sidebar-toggle" class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-chevron-right"></i>
+  <header class="site-header">
+    <button class="brand" type="button" data-page="home" aria-label="Tarot Teller home">
+      <span>Tarot Teller</span>
     </button>
+    <nav class="main-nav" aria-label="Celestial guides">
+      <button class="nav-link is-active" type="button" data-page="tarot">Tarot</button>
+      <button class="nav-link" type="button" data-page="astrology">Astrology</button>
+      <button class="nav-link" type="button" data-page="retrogrades">Retrogrades</button>
+      <button class="nav-link" type="button" data-page="moon">Moon</button>
+      <button class="nav-link" type="button" data-page="calendar">Calendar</button>
+    </nav>
+    <button class="menu-button" id="menuButton" type="button" aria-expanded="false" aria-label="Open navigation"><span></span><span></span></button>
+  </header>
 
-    <button id="custom-chat-button">🔮 Ask Jasmine for a deeper look into your destiny</button>
-    <div id="landing-page" class="w-full max-w-4xl mx-auto flex flex-col items-center bg-gradient-to-b from-bgLighter to-bgDarker border border-primary/30 rounded-lg shadow-xl p-8 md:p-12 text-center">
-        <img src="cards/aladdin_magic_lamp.gif" alt="Golden Lamp" class="w-40 h-auto mb-8 gold-glow">
-        <h1 class="text-5xl font-extrabold font-cairo mb-4 text-primary">Tarot Teller</h1>
-        <p class="text-lg font-medium text-neutral-300 mb-8 max-w-lg">Find your answers with the ancient art of tarot</p>
-        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300" id="startButton" onclick="startTarot()">
-            <i class="fas fa-wand-sparkles mr-2"></i> Begin Your Reading
+  <main>
+    <section class="page hero is-active" id="homePage" data-page-panel="home" aria-labelledby="heroTitle">
+      <div class="hero-orbit" aria-hidden="true"><span class="orbit orbit--outer"></span><span class="orbit orbit--inner"></span><span class="moon-glyph">☾</span></div>
+      <div class="hero-copy">
+        <div class="lamp-stage" aria-hidden="true">
+          <span class="lamp-aura"></span>
+          <img class="hero-lamp" src="cards/aladdin_magic_lamp.gif" alt="">
+        </div>
+        <div class="lamp-title" aria-label="Tarot Teller">Tarot Teller</div>
+        <h1 class="spirit-question" id="heroTitle"><span>✦</span> What do your spirit guides<br><em>have in store for you?</em> <span>✦</span></h1>
+        <p class="hero-intro">Take a breath. You do not have to know every answer today. Let the cards, planets, and moon offer a little comfort and clarity.</p>
+        <div class="hero-actions">
+          <button class="primary-button" id="startButton" type="button">See what awaits you <span aria-hidden="true">→</span></button>
+          <button class="witchy-button" id="jasmineChatButton" type="button"><span aria-hidden="true">☾</span> Whisper to Jasmine</button>
+        </div>
+        <div class="quick-links" aria-label="Explore celestial guides">
+          <button type="button" data-page="astrology"><span class="celestial-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="5"/><path d="M16 2v5M16 25v5M2 16h5M25 16h5M6.1 6.1l3.6 3.6M22.3 22.3l3.6 3.6M25.9 6.1l-3.6 3.6M9.7 22.3l-3.6 3.6"/></svg></span><span class="quick-label">Know your sign</span></button>
+          <button type="button" data-page="retrogrades"><span class="celestial-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M25.5 12A10.5 10.5 0 0 0 7.8 8.5L5 11.3M5 5.8v5.5h5.5M6.5 20A10.5 10.5 0 0 0 24.2 23.5l2.8-2.8M27 26.2v-5.5h-5.5"/><circle cx="16" cy="16" r="2.2"/></svg></span><span class="quick-label">Check retrogrades</span></button>
+          <button type="button" data-page="moon"><span class="celestial-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M23.4 23.2A11.8 11.8 0 0 1 10 4.2a12 12 0 1 0 13.4 19Z"/><path class="icon-spark" d="M24.5 5v4M22.5 7h4"/></svg></span><span class="quick-label">Follow the moon</span></button>
+          <button type="button" data-page="calendar"><span class="celestial-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="20" rx="3"/><path d="M10 4v6M22 4v6M5 13h22M16 17l1.2 2.5 2.8.4-2 1.9.5 2.8-2.5-1.3-2.5 1.3.5-2.8-2-1.9 2.8-.4Z"/></svg></span><span class="quick-label">Celestial calendar</span></button>
+        </div>
+        <aside class="daily-whisper" id="dailyWhisper" aria-live="polite">
+          <div class="daily-whisper-mark" aria-hidden="true">☽</div>
+          <div><p>Today’s whisper</p><blockquote id="dailyQuote">Listening to the sky…</blockquote><span id="dailyAstrology"></span></div>
+        </aside>
+        <p class="fine-print">What does the universe have in store for you?</p>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span></span>Look inward</div>
+    </section>
+
+    <section class="page guide-page tarot-page" id="tarotPage" data-page-panel="tarot" hidden aria-labelledby="tarotTitle">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> Tarot reading <span></span></p>
+        <h2 id="tarotTitle">What shall the cards reveal?</h2>
+        <p>Hold your question quietly, or write it below.</p>
+      </div>
+      <div class="reading-focus-tabs" id="readingFocusTabs" role="tablist" aria-label="Reading focus">
+        <button class="is-active" type="button" role="tab" aria-selected="true" data-focus="general"><span>✦</span> General</button>
+        <button type="button" role="tab" aria-selected="false" data-focus="love"><span>♡</span> Love</button>
+        <button type="button" role="tab" aria-selected="false" data-focus="career"><span>♜</span> Career</button>
+        <button type="button" role="tab" aria-selected="false" data-focus="spiritual"><span>☾</span> Spiritual path</button>
+        <button type="button" role="tab" aria-selected="false" data-focus="decision"><span>⚖</span> Decision</button>
+      </div>
+      <label class="question-field">
+        <span class="sr-only">Your question or intention</span>
+        <textarea id="questionInput" rows="2" maxlength="180" placeholder="What is asking for your attention?"></textarea>
+        <span class="question-count"><b id="questionCount">0</b>/180</span>
+      </label>
+      <div class="spread-grid" id="spreadChooser" role="group" aria-label="Choose a tarot spread">
+        <button class="spread-card" id="drawOneCardBtn" type="button" data-spread="single">
+          <span class="spread-number">01</span><span class="spread-art spread-art--single" aria-hidden="true"><i></i></span>
+          <span class="spread-name">The Compass</span><span class="spread-description">One card for focused guidance</span><span class="spread-link">Draw one card <b>→</b></span>
         </button>
-    </div>
-
-    <div id="tarot-page" class="w-full max-w-5xl mx-auto flex flex-col items-center bg-gradient-to-b from-bgLighter to-bgDarker border border-primary/30 rounded-lg shadow-xl p-8 md:p-12 hidden">
-        <h1 class="text-4xl font-bold font-cairo mb-8 text-primary">What do the cards say?</h1>
-        <div class="flex flex-wrap justify-center gap-4 mb-8 w-full">
-            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawOneCardBtn" onclick="drawOneCard()">
-                <i class="fas fa-square mr-2"></i> Single Card
-            </button>
-            <button class="bg-transparent text-primary border border-primary rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-primary/10 transition-all duration-300" id="drawThreeCardsBtn" onclick="drawThreeCards()">
-                <i class="fas fa-clone mr-2"></i> Three Cards
-            </button>
-        </div>
-
-        <div class="flex flex-wrap justify-center gap-6 w-full p-4 overflow-x-auto" id="cards">
-        </div>
-
-        <button class="bg-primary text-white border border-primary rounded-full py-3 px-8 text-lg font-cairo font-semibold shadow-md hover:bg-primaryDark hover:shadow-lg transition-all duration-300 hidden mt-6" id="overallReadingBtn" onclick="generateOverallReading()">
-            <i class="fas fa-book-open mr-2"></i> Reveal Overall Meaning
+        <button class="spread-card" id="drawThreeCardsBtn" type="button" data-spread="three">
+          <span class="spread-number">03</span><span class="spread-art spread-art--three" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="spread-name">The Journey</span><span class="spread-description">Past, present and future</span><span class="spread-link">Draw three cards <b>→</b></span>
         </button>
-        <div class="flex flex-wrap justify-center gap-4 mt-8 w-full">
-            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="newReadingBtn" onclick="newReading()">
-                <i class="fas fa-rotate mr-2"></i> New Reading
-            </button>
-            <button class="bg-transparent text-neutral-400 border border-neutral-600 rounded-full py-2 px-6 text-md font-cairo font-semibold hover:bg-neutral-700 hover:text-neutral-200 transition-all duration-300" id="backToHomeBtn" onclick="backToHome()">
-                <i class="fas fa-house mr-2"></i> Back to Home
-            </button>
-        </div>
-    </div>
+      </div>
+      <div class="reading-result" id="readingResult" hidden>
+        <div class="result-heading"><p class="eyebrow"><span></span> Your reading <span></span></p><h2>The cards have spoken.</h2><p id="resultPrompt"></p></div>
+        <div class="cards-stage" id="cards" aria-live="polite"></div>
+        <div class="reading-actions"><button class="primary-button" id="overallReadingBtn" type="button">Reveal the full message <span>✦</span></button><button class="secondary-button" id="newReadingBtn" type="button">Draw again</button></div>
+        <article class="overall-reading" id="overallReading" hidden tabindex="-1"><div class="overall-icon">☾</div><p class="eyebrow">The thread between them</p><h3>Your full message</h3><div id="overallReadingContent"></div><p class="reflection-note">Take what resonates. Leave what doesn’t.</p></article>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
+    <section class="page guide-page" id="astrologyPage" data-page-panel="astrology" hidden aria-labelledby="astrologyTitle">
+      <div class="section-heading"><p class="eyebrow"><span></span> The zodiac <span></span></p><h2 id="astrologyTitle">Meet your cosmic<br>archetype.</h2><p>Choose a sign for its element, energy, and reflective prompt.</p></div>
+      <article class="birth-chart-card">
+        <div class="birth-chart-intro">
+          <p class="eyebrow">Your natal snapshot</p>
+          <h3>Read your birth chart</h3>
+          <p>Enter your birth details to discover your Sun, Moon, Rising sign, and planetary placements.</p>
+        </div>
+        <form class="birth-chart-form" id="birthChartForm">
+          <label><span>Date of birth</span><input id="birthDate" type="date" required></label>
+          <label><span>Birth time <small>(for Rising sign)</small></span><input id="birthTime" type="time"></label>
+          <label class="location-field"><span>Birthplace</span><input id="birthLocation" type="text" required autocomplete="address-level2" placeholder="City, country"></label>
+          <button class="primary-button" id="chartSubmit" type="submit">Read my chart <span>→</span></button>
+        </form>
+        <p class="form-note" id="birthChartNote">Your details stay in your browser and are not saved.</p>
+        <div class="birth-chart-result" id="birthChartResult" hidden aria-live="polite"></div>
+      </article>
+      <div class="zodiac-layout">
+        <div class="zodiac-wheel" id="zodiacWheel" role="list" aria-label="Zodiac signs"></div>
+        <article class="zodiac-detail" id="zodiacDetail" aria-live="polite"></article>
+      </div>
+    </section>
+
+    <section class="page guide-page" id="retrogradesPage" data-page-panel="retrogrades" hidden aria-labelledby="retrogradesTitle">
+      <div class="section-heading"><p class="eyebrow"><span></span> 2026 planetary weather <span></span></p><h2 id="retrogradesTitle">Pause. Review.<br>Realign.</h2><p>See which planets appear to be moving backward and what astrologers associate with each cycle.</p></div>
+      <div class="cosmic-status" id="retrogradeSummary"></div>
+      <div class="retrograde-grid" id="retrogradeGrid"></div>
+      <p class="data-note">Dates use the tropical zodiac and may shift by a day across time zones. Astrological interpretations are for reflection, not scientific prediction.</p>
+    </section>
+
+    <section class="page guide-page" id="moonPage" data-page-panel="moon" hidden aria-labelledby="moonTitle">
+      <div class="section-heading"><p class="eyebrow"><span></span> Lunar rhythm <span></span></p><h2 id="moonTitle">Move with<br>the moon.</h2><p>A live view of today’s phase, calculated in your browser.</p></div>
+      <div class="moon-dashboard">
+        <div class="moon-visual-wrap" aria-hidden="true">
+          <div class="moon-orbit-line"></div>
+          <div class="moon-visual" id="moonVisual">
+            <div class="moon-surface">
+              <i class="crater crater--one"></i><i class="crater crater--two"></i><i class="crater crater--three"></i>
+              <i class="crater crater--four"></i><i class="crater crater--five"></i><i class="crater crater--six"></i>
+            </div>
+            <span class="moon-phase-shadow"></span>
+            <span class="moon-rim"></span>
+          </div>
+          <div class="moon-floor-shadow"></div>
+        </div>
+        <article class="moon-detail">
+          <p class="status-pill" id="moonDate"></p><h3 id="moonPhaseName"></h3><p class="moon-illumination"><strong id="moonIllumination"></strong> illuminated</p><p id="moonMeaning"></p>
+          <div class="moon-progress"><span id="moonProgress"></span></div><div class="moon-scale"><span>New moon</span><span>Full moon</span><span>New moon</span></div>
+          <div class="moon-prompt"><span>Tonight’s invitation</span><p id="moonPrompt"></p></div>
+        </article>
+      </div>
+      <div class="phase-strip" id="phaseStrip"></div>
+    </section>
+
+    <section class="page guide-page calendar-page" id="calendarPage" data-page-panel="calendar" hidden aria-labelledby="calendarTitle">
+      <div class="section-heading">
+        <p class="eyebrow"><span></span> Celestial almanac <span></span></p>
+        <h2 id="calendarTitle">As above,<br>so below.</h2>
+        <p>Follow lunar phases, planetary stations, eclipses, zodiac seasons, and major sign changes in one living calendar.</p>
+      </div>
+      <div class="calendar-shell">
+        <div class="calendar-toolbar">
+          <div class="calendar-title-wrap"><span class="calendar-sigil" aria-hidden="true">☽</span><h3 id="calendarMonthTitle"></h3></div>
+          <div class="calendar-controls">
+            <button type="button" id="calendarPrev" aria-label="Previous month">←</button>
+            <button type="button" id="calendarToday">Today</button>
+            <button type="button" id="calendarNext" aria-label="Next month">→</button>
+          </div>
+        </div>
+        <div class="calendar-legend" aria-label="Event legend">
+          <span><i class="event-dot event-dot--moon"></i>Moon</span>
+          <span><i class="event-dot event-dot--retrograde"></i>Retrograde</span>
+          <span><i class="event-dot event-dot--season"></i>Zodiac season</span>
+          <span><i class="event-dot event-dot--cosmic"></i>Cosmic event</span>
+        </div>
+        <div class="calendar-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+        <div class="calendar-grid" id="calendarGrid" role="grid" aria-labelledby="calendarMonthTitle"></div>
+      </div>
+      <aside class="month-agenda">
+        <div class="agenda-heading"><p class="eyebrow">This month’s portals</p><h3>Celestial moments</h3></div>
+        <div class="agenda-list" id="calendarAgenda"></div>
+      </aside>
+      <p class="data-note">Astronomical timing is calculated locally with Astronomy Engine. Astrological language is offered as a symbolic guide for reflection.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer"><span>Made for curious souls</span><span>✦</span><span>Tarot Teller</span></footer>
+  <div id="n8n-chat" aria-label="Chat with Jasmine"></div>
+
+  <script type="module">
+    const chatRoot = document.querySelector('#n8n-chat');
+    try {
+      const { createChat } = await import('https://cdn.jsdelivr.net/npm/@n8n/chat@1.40.4/dist/chat.bundle.es.js');
+      createChat({
+        webhookUrl: 'https://n8n.s2.moussa2100.com/webhook/13912d70-d67d-4142-86f8-5fffa85a50bd/chat',
+        target: '#n8n-chat',
+        mode: 'window',
+        loadPreviousSession: false,
+        showWelcomeScreen: false,
+        initialMessages: [
+          'Welcome, seeker. I’m Jasmine, your tarot guide.',
+          'Ask about your reading, a card, or what you would like to reflect on.'
+        ],
+        metadata: { source: 'tarot-teller', page: window.location.pathname },
+        i18n: {
+          en: {
+            title: 'Ask Jasmine',
+            subtitle: 'A deeper look into your reading',
+            footer: 'For reflection and entertainment',
+            getStarted: 'Begin a conversation',
+            inputPlaceholder: 'Ask Jasmine a question…'
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Jasmine chat could not load:', error);
+      chatRoot.innerHTML = '<button class="chat-unavailable" type="button" disabled>Jasmine is resting</button>';
+    }
+  </script>
 </body>
 </html>
